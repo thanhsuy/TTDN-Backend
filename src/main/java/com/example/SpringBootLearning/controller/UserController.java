@@ -19,9 +19,6 @@ public class UserController {
 
     @GetMapping()
     public ApiReponse getUser() {
-        var authentication = SecurityContextHolder.getContext().getAuthentication();
-        System.out.println(authentication.getName());
-        System.out.println(authentication.getAuthorities());
         return userService.getUsers();
     }
 
