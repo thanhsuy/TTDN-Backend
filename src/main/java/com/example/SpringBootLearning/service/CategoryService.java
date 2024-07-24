@@ -5,8 +5,8 @@ import org.springframework.stereotype.Service;
 
 import com.example.SpringBootLearning.entity.Category;
 import com.example.SpringBootLearning.repository.CategoryRepository;
-import com.example.SpringBootLearning.request.ApiReponse;
-import com.example.SpringBootLearning.request.CategoryCreationRequest;
+import com.example.SpringBootLearning.dto.respone.ApiReponse;
+import com.example.SpringBootLearning.dto.request.CategoryCreationRequest;
 
 @Service
 public class CategoryService {

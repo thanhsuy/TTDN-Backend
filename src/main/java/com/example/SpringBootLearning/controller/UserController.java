@@ -1,12 +1,14 @@
 package com.example.SpringBootLearning.controller;
 
+import com.example.SpringBootLearning.dto.respone.UserRespone;
 import jakarta.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import com.example.SpringBootLearning.request.ApiReponse;
-import com.example.SpringBootLearning.request.UserCreationRequest;
+import com.example.SpringBootLearning.dto.respone.ApiReponse;
+import com.example.SpringBootLearning.dto.request.UserCreationRequest;
 import com.example.SpringBootLearning.service.UserService;
 
 @RestController
@@ -17,12 +19,24 @@ public class UserController {
 
     @GetMapping()
     public ApiReponse getUser() {
+        var authentication = SecurityContextHolder.getContext().getAuthentication();
+        System.out.println(authentication.getName());
+        System.out.println(authentication.getAuthorities());
         return userService.getUsers();
     }
 
     @GetMapping("{userId}")
-    public ApiReponse getUserById(@PathVariable("userId") String userId) {
-        return userService.getUserById(userId);
+    public ApiReponse<UserRespone> getUserById(@PathVariable("userId") String userId) {
+        return ApiReponse.<UserRespone>builder()
+                .result(userService.getUserById(userId))
+                .build();
+    }
+
+    @GetMapping("/myInfo")
+    public ApiReponse<UserRespone> getMyInfo() {
+        return ApiReponse.<UserRespone>builder()
+                .result(userService.getMyInfo())
+                .build();
     }
 
     @PostMapping("/create")
@@ -30,9 +44,9 @@ public class UserController {
         return userService.createUser(request);
     }
 
+
     @PutMapping("/{userId}/update")
-    public ApiReponse updateUser(
-            @PathVariable("userId") String userId, @RequestBody @Valid UserCreationRequest request) {
+    public ApiReponse updateUser(@PathVariable("userId") String userId, @RequestBody @Valid UserCreationRequest request) {
         return userService.updateUser(userId, request);
     }
 
