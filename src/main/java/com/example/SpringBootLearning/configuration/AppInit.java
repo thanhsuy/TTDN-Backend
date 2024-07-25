@@ -29,7 +29,7 @@ public class AppInit {
                 roles.add(Roles.ADMIN.name());
                 User user = User.builder()
                             .username("admin")
-                            .password(passwordEncoder.encode("admin"))
+                            .password(passwordEncoder.encode("admin@12345678"))
                             .roles(roles)
                             .build();
                 userRepository.save(user);

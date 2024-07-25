@@ -11,10 +11,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
 
@@ -25,10 +22,14 @@ import java.text.ParseException;
 public class AuthenticationController {
     AuthenticationService authenticationService;
     @PostMapping("/login")
+    @CrossOrigin(origins = "http://127.0.0.1:5500")
     public ApiReponse<AuthenticationRespone> authenticate(@RequestBody AuthenticationRequest authenticationRequest){
         var result = authenticationService.authenticate(authenticationRequest);
         ApiReponse apiReponse = new ApiReponse();
         apiReponse.setResult(result);
+        System.out.println(authenticationRequest.getUsername());
+        System.out.println(authenticationRequest.getPassword());
+        System.out.println("controller sucess");
         return apiReponse;
     }
     @PostMapping("/introspect")

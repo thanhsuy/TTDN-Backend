@@ -37,6 +37,7 @@ public class UserController {
     }
 
     @PostMapping("/create")
+    @CrossOrigin(origins = "http://127.0.0.1:5500")
     public ApiReponse createUser(@RequestBody @Valid UserCreationRequest request) {
         return userService.createUser(request);
     }

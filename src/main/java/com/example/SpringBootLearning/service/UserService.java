@@ -39,12 +39,11 @@ public class UserService {
         return apiReponse;
     }
 
-    @PostAuthorize("returnObject.username == authentication.name")
     public UserRespone getUserById(String userId) {
         return userMapper.toUserRespone(userRepository.findById(userId).orElseThrow(() -> new AppException(ErrorCode.USER_NOTFOUND)));
     }
 
-
+    @PostAuthorize("returnObject.username == authentication.name")
     public UserRespone getMyInfo(){
         var context = SecurityContextHolder.getContext();
         String username = context.getAuthentication().getName();
