@@ -10,6 +10,7 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Builder
+@IdClass(AdditionalfunctionsId.class)
 public class Additionalfunctions {
     @Id
     @Column(nullable = false)

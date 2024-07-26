@@ -10,6 +10,7 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Builder
+@IdClass(TermofuseId.class)
 public class Termofuse {
     @Id
     @Column(nullable = false)
