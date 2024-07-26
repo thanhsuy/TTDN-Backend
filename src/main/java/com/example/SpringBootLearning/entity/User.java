@@ -18,14 +18,15 @@ import lombok.experimental.FieldDefaults;
 @Builder
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-     String id;
-     String username;
+     int iduser;
+     String name;
+     LocalDate dateofbirth;
+     int nationalidno;
+     String phoneno;
+     String email;
      String address;
-     LocalDate dob;
-     String firstname;
-     String lastname;
+     String drivinglicense;
      String password;
-     String phone;
-     Set<String> roles;
+     String role;
+     float wallet;
 }

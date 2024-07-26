@@ -43,26 +43,23 @@ public class UserService {
         return userMapper.toUserRespone(userRepository.findById(userId).orElseThrow(() -> new AppException(ErrorCode.USER_NOTFOUND)));
     }
 
-    @PostAuthorize("returnObject.username == authentication.name")
+    @PostAuthorize("returnObject.email == authentication.name")
     public UserRespone getMyInfo(){
         var context = SecurityContextHolder.getContext();
-        String username = context.getAuthentication().getName();
-        return userMapper.toUserRespone(userRepository.findByUsername(username).orElseThrow(() -> new AppException(ErrorCode.USER_NOTFOUND)));
+        String email = context.getAuthentication().getName();
+        return userMapper.toUserRespone(userRepository.findByEmail(email).orElseThrow(() -> new AppException(ErrorCode.USER_NOTFOUND)));
     }
 
     public ApiReponse createUser(UserCreationRequest request) {
         User user = userMapper.toUser(request);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        HashSet<String> roles = new HashSet<>();
-        roles.add(Roles.USER.name());
-        user.setRoles(roles);
-        ApiReponse apiReponse = new ApiReponse();
-        apiReponse.setResult(user);
-        if (userRepository.existsByUsername(request.getUsername())) {
+        user.setRole(Roles.USER.name());
+        if (userRepository.existsByEmail(request.getEmail())) {
             throw new AppException(ErrorCode.USER_EXISTED);
         }
-
         userRepository.save(user);
+        ApiReponse apiReponse = new ApiReponse();
+        apiReponse.setResult(user);
         return apiReponse;
     }
 
@@ -70,6 +67,7 @@ public class UserService {
         User user = userRepository.findById(userId).orElseThrow(() -> new AppException(ErrorCode.USER_NOTFOUND));
         ApiReponse apiReponse = new ApiReponse();
         user = userMapper.updateUser(user,request);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
         apiReponse.setResult(userRepository.save(user));
         return apiReponse;

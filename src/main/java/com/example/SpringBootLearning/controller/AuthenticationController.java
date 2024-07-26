@@ -22,12 +22,12 @@ import java.text.ParseException;
 public class AuthenticationController {
     AuthenticationService authenticationService;
     @PostMapping("/login")
-    @CrossOrigin(origins = "http://127.0.0.1:5500")
+    @CrossOrigin(origins = "http://localhost:3000")
     public ApiReponse<AuthenticationRespone> authenticate(@RequestBody AuthenticationRequest authenticationRequest){
         var result = authenticationService.authenticate(authenticationRequest);
         ApiReponse apiReponse = new ApiReponse();
         apiReponse.setResult(result);
-        System.out.println(authenticationRequest.getUsername());
+        System.out.println(authenticationRequest.getEmail());
         System.out.println(authenticationRequest.getPassword());
         System.out.println("controller sucess");
         return apiReponse;

@@ -47,24 +47,9 @@ public class SecurityConfig {
         httpSecurity
                 .csrf(AbstractHttpConfigurer::disable) // Tắt CSRF (tuỳ chọn)
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers(PUBLIC_ENDPOINT).permitAll() // Cho phép truy cập vào các trang công khai
+                        .requestMatchers("/**").permitAll()
                         .anyRequest().authenticated()
                 );
-//                .formLogin((form) -> form
-//                        .loginPage("/login") // Đặt trang đăng nhập tùy chỉnh
-//                        .permitAll() // Cho phép tất cả truy cập vào trang đăng nhập
-//                )
-//                .logout((logout) -> logout.permitAll());
-
-//         Cấu hình OAuth2 và JWT nếu cần thiết
-        httpSecurity.oauth2ResourceServer(oauth2 -> oauth2
-                .jwt(jwtConfigurer -> jwtConfigurer
-                        .decoder(jwtDecoder())
-                        .jwtAuthenticationConverter(jwtAuthenticationConverter())
-                )
-                .authenticationEntryPoint(new JwtAuthenticationEntryPoint())
-        )
-        ;
 
         return httpSecurity.build();
     }

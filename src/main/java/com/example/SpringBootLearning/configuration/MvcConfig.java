@@ -18,7 +18,7 @@ public class MvcConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**") // Cho phép CORS cho tất cả các endpoint
-                .allowedOrigins("http://127.0.0.1:5500") // Cho phép yêu cầu từ địa chỉ frontend
+                .allowedOrigins("http://localhost:3000") // Cho phép yêu cầu từ địa chỉ frontend
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // Các phương thức HTTP được phép
                 .allowedHeaders("*"); // Các tiêu đề HTTP được phép
     }

@@ -39,7 +39,7 @@ public class AuthenticationService {
     private static final String SIGNER_KEY = "0aPglnnROU/zGjIuvAA32LpDzmqEY2O7J4fgQ4Eh+4KuJaSCXQIFQgBv6a69Pvkt";
 
     public AuthenticationRespone authenticate(AuthenticationRequest request){
-        var user = userRepository.findByUsername(request.getUsername()).orElseThrow(()
+        var user = userRepository.findByEmail(request.getEmail()).orElseThrow(()
                 -> new AppException(ErrorCode.USER_NOTFOUND));
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder(10);
         boolean authenticated = bCryptPasswordEncoder.matches(request.getPassword(),user.getPassword());
@@ -47,7 +47,7 @@ public class AuthenticationService {
             throw new AppException(ErrorCode.UNAUTHENTICATED);
         }
 
-        var token = genToken(request.getUsername());
+        var token = genToken(request.getEmail());
         AuthenticationRespone authenticationRespone = new AuthenticationRespone().builder()
                 .token(token)
                 .authenticated(authenticated)
@@ -56,14 +56,14 @@ public class AuthenticationService {
     }
 
     public String genToken(String username){
-        Optional<User> user =  userRepository.findByUsername(username);
+        Optional<User> user =  userRepository.findByEmail(username);
         JWSHeader header = new JWSHeader(JWSAlgorithm.HS512);
         JWTClaimsSet jwtClaimsSet = new JWTClaimsSet.Builder()
-                .subject(user.get().getUsername())
+                .subject(user.get().getEmail())
                 .issuer("devteria.com")
                 .issueTime(new Date())
                 .expirationTime(new Date(Instant.now().plus(1, ChronoUnit.HOURS).toEpochMilli()))
-                .claim("scope", buildScope(user))
+                .claim("scope", user.get().getRole())
                 .build();
         Payload payload = new Payload(jwtClaimsSet.toJSONObject());
         JWSObject jwsObject = new JWSObject(header, payload);
@@ -88,12 +88,5 @@ public class AuthenticationService {
         return IntrospectRespone.builder()
                 .authenticated(verified && expityTime.after(new Date()))
                 .build();
-    }
-    private String buildScope(Optional<User> user){
-        StringJoiner stringJoiner = new StringJoiner(" ");
-        if(!CollectionUtils.isEmpty(user.get().getRoles())){
-            user.get().getRoles().forEach(stringJoiner::add);
-        }
-        return stringJoiner.toString();
     }
 }

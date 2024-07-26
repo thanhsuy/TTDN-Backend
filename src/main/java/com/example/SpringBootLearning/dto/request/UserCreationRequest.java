@@ -15,12 +15,14 @@ import lombok.experimental.FieldDefaults;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserCreationRequest {
-    String username;
+    String name;
+    LocalDate dateofbirth;
+    int nationalidno;
+    String email;
     String address;
-    LocalDate dob;
-    String firstname;
-    String lastname;
-    Set<String> roles;
+    String drivingLicense;
+    String roles;
+    float wallet;
 
     @Size(min = 8, message = "PASSWORD_INVALID")
     @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@#$%^&+=]).*$", message = "PASSWORD_FORM_INVALID")

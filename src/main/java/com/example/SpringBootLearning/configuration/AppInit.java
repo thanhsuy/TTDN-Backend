@@ -21,20 +21,20 @@ public class AppInit {
     private PasswordEncoder passwordEncoder;
 
 
-    @Bean
-    ApplicationRunner applicationRunner(UserRepository userRepository){
-        return args -> {
-            if(userRepository.findByUsername("admin").isEmpty()){
-                HashSet<String> roles = new HashSet<>();
-                roles.add(Roles.ADMIN.name());
-                User user = User.builder()
-                            .username("admin")
-                            .password(passwordEncoder.encode("admin@12345678"))
-                            .roles(roles)
-                            .build();
-                userRepository.save(user);
-                log.warn("admin has create");
-            }
-        };
-    }
+//    @Bean
+//    ApplicationRunner applicationRunner(UserRepository userRepository){
+//        return args -> {
+//            if(userRepository.findByUsername("admin").isEmpty()){
+//                HashSet<String> roles = new HashSet<>();
+//                roles.add(Roles.ADMIN.name());
+//                User user = User.builder()
+//                            .username("admin")
+//                            .password(passwordEncoder.encode("admin@12345678"))
+//                            .roles(roles)
+//                            .build();
+//                userRepository.save(user);
+//                log.warn("admin has create");
+//            }
+//        };
+//    }
 }
