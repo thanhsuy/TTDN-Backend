@@ -38,7 +38,8 @@ public class SecurityConfig {
                     "/",
                     "/user/create",
                     "/auth/login",
-                    "/auth/introspect"
+                    "/auth/introspect",
+                    "/user/forgot"
             };
     private String SERCRET_KEY = "0aPglnnROU/zGjIuvAA32LpDzmqEY2O7J4fgQ4Eh+4KuJaSCXQIFQgBv6a69Pvkt";
 
@@ -47,10 +48,17 @@ public class SecurityConfig {
         httpSecurity
                 .csrf(AbstractHttpConfigurer::disable) // Tắt CSRF (tuỳ chọn)
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, PUBLIC_ENDPOINT).permitAll()
+                        .requestMatchers(HttpMethod.PUT, PUBLIC_ENDPOINT).permitAll()
                         .anyRequest().authenticated()
                 );
-
+        httpSecurity.oauth2ResourceServer(oauth2 -> oauth2
+                .jwt(jwtConfigurer -> jwtConfigurer
+                        .decoder(jwtDecoder())
+                        .jwtAuthenticationConverter(jwtAuthenticationConverter())
+                )
+                .authenticationEntryPoint(new JwtAuthenticationEntryPoint())
+        );
         return httpSecurity.build();
     }
 

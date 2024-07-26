@@ -1,5 +1,6 @@
 package com.example.SpringBootLearning.controller;
 
+import com.example.SpringBootLearning.dto.request.ForgotPasswordRequest;
 import com.example.SpringBootLearning.dto.respone.UserRespone;
 import jakarta.validation.Valid;
 
@@ -47,6 +48,12 @@ public class UserController {
     public ApiReponse updateUser(@PathVariable("userId") String userId, @RequestBody @Valid UserCreationRequest request) {
         return userService.updateUser(userId, request);
     }
+
+    @PutMapping("/forgot")
+    public ApiReponse forgotPassword(@RequestBody @Valid ForgotPasswordRequest request) {
+        return userService.fotgotPassword(request);
+    }
+
 
     @DeleteMapping("/{userId}/delete")
     public ApiReponse deleteUser(@PathVariable("userId") String userId) {

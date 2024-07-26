@@ -1,5 +1,6 @@
 package com.example.SpringBootLearning.service;
 
+import com.example.SpringBootLearning.dto.request.ForgotPasswordRequest;
 import com.example.SpringBootLearning.dto.respone.UserRespone;
 import com.example.SpringBootLearning.enums.Roles;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,7 +54,6 @@ public class UserService {
     public ApiReponse createUser(UserCreationRequest request) {
         User user = userMapper.toUser(request);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setRole(Roles.USER.name());
         if (userRepository.existsByEmail(request.getEmail())) {
             throw new AppException(ErrorCode.USER_EXISTED);
         }
@@ -70,6 +70,25 @@ public class UserService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
         apiReponse.setResult(userRepository.save(user));
+        return apiReponse;
+    }
+
+    public ApiReponse fotgotPassword(ForgotPasswordRequest request) {
+        User user = userRepository.findByEmail(request.getEmail()).orElseThrow(() -> new AppException(ErrorCode.USER_NOTFOUND));
+        if(request.getNewpassword().equals(request.getConfirmpassword()) && request.getNewpassword().equals(request.getConfirmpassword()))
+        {
+            user.setPassword(passwordEncoder.encode(request.getNewpassword()));
+        }else throw new AppException(ErrorCode.PASSWORC_NOTEQUAL);
+
+        System.out.println(request.getNewpassword().equals(request.getConfirmpassword()) && request.getNewpassword().equals(request.getConfirmpassword()));
+        System.out.println(request.getNewpassword());
+        System.out.println(request.getConfirmpassword());
+
+        userRepository.save(user);
+        ApiReponse apiReponse = new ApiReponse()
+                .builder()
+                .result(user)
+                .build();
         return apiReponse;
     }
 

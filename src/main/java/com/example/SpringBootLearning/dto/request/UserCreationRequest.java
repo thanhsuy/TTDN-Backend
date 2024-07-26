@@ -20,8 +20,8 @@ public class UserCreationRequest {
     int nationalidno;
     String email;
     String address;
-    String drivingLicense;
-    String roles;
+    String drivinglicense;
+    String role;
     float wallet;
 
     @Size(min = 8, message = "PASSWORD_INVALID")
@@ -29,5 +29,5 @@ public class UserCreationRequest {
     String password;
 
     @Pattern(regexp = "^\\+?[0-9]{10,15}$", message = "PHONENUMER_INVALID")
-    String phone;
+    String phoneno;
 }
