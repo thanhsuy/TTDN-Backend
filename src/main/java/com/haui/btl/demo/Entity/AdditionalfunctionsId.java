@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 @Data
 @NoArgsConstructor
@@ -15,4 +16,18 @@ import java.io.Serializable;
 public class AdditionalfunctionsId implements Serializable {
     Integer idcar;
     String namefunctions;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AdditionalfunctionsId that = (AdditionalfunctionsId) o;
+        return Objects.equals(idcar, that.idcar) &&
+                Objects.equals(namefunctions, that.namefunctions);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(idcar, namefunctions);
+    }
 }

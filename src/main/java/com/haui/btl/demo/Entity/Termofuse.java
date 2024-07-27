@@ -11,11 +11,13 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Builder
 public class Termofuse {
-    @Id
-    @Column(nullable = false)
-    int idCar;
-
-    @Id
-    @Column(nullable = false, length = 100)
-    String nameTerms;
+//    @Id
+//    @Column(nullable = false)
+//    int idCar;
+//
+//    @Id
+//    @Column(nullable = false, length = 100)
+//    String nameTerms;
+    @EmbeddedId
+    TermofuseId id;
 }

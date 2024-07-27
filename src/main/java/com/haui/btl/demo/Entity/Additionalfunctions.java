@@ -5,6 +5,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 @Entity
+@IdClass(AdditionalfunctionsId.class)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
