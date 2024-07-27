@@ -1,5 +1,6 @@
 package com.haui.btl.demo.Repository.CustomCarRepository;
 
+import com.haui.btl.demo.Entity.Car;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
@@ -8,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public class CarRepositoryCustomImp implements CarRepositoryCustom{
+public class CarRepositoryCustomImp implements CarRepositoryCustom<Car> {
     @PersistenceContext
     private EntityManager entityManager;
 
