@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Home Page</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<nav  class="navbar navbar-expand-lg navbar-light" style="background-color: rgb(102 102 102); color:white;">
+    <div class="collapse navbar-collapse" id="navbarText">
+        <span class="navbar-text mr-auto" >
+            <i class="fas fa-car"></i> Rent a car today !
+        </span>
+        <ul class="navbar-nav">
+            <li class="nav-item active">
+                <a class="nav-link" href="#">About us</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#"><i class="fas fa-sign-in-alt"> </i> Sign up | log in</a>
+            </li>
+
+        </ul>
+    </div>
+</nav>
+<div style="padding-top: 30px;margin: 1px 0px 0px 0px;padding-left:40px;border-top-color: white;width:100%;height: 274px;background-color: rgb(102 102 102);color:white;" class="banner">
+    <div style="width:50%; float:left" class="banner-left">
+        <h2>
+            Looking for a vehicle?
+        </h2>
+        <h2>
+            You're at the right place.
+        </h2>
+        <br>
+        <h4>
+            Choose between 100s of private car for rent at ready low prices!
+        </h4>
+        <button style="color:white; background-color:blue; height: 50px;" type="text" id="input-banner-left" name="input-banner-left">Find a Rental Car Near You</button>
+        <br>
+    </div>
+    <div style="width:50%; float:right" class="banner-right">
+        <br>
+        <h2>
+            Are you a car owner?
+        </h2>
+        <br>
+        <h4>
+            List your car and make money from your asset today!
+        </h4>
+        <br>
+        <button style="color:white; background-color:blue; height: 50px;" type="text" id="input-banner-right" name="input-banner-right" >List Your Car Today</button>
+        <br>
+    </div>
+</div>
+<div style="padding: 20px 50px 50px 20px;width:100%;height: 514px;" id="why-us">
+    <h2 style="width:100%; height:25px;">Why us?</h2>
+    <div style="margin: 20px 90px 0px 90px;width: 220px;height: 390px; float:left" id="section-item">
+        <div style="background: white;left: 70px;top: 35px;position: relative;border-style: solid;border-color:black;border-radius: 50px;width: 70px;height: 70px;" id="section-item-image">
+            <i style=" margin: 2px 0px 0px 14px; font-size: 60px; " class="fas fa-dollar-sign"></i>
+        </div>
+        <div style="padding: 35px 0px 0px 20px;border-style: solid;border-color:black;width: 220px;height: 320px;" id="section-item-content-1">
+            <h3>Save money</h3>
+            <br>
+            <p>We have no setup or registration fees. You are only charged when you rent
+                a car. So get started for FREE!</p>
+        </div>
+    </div>
+    <div style="margin: 20px 90px 0px 90px;width: 220px;height: 390px; float:left" id="section-item-2">
+        <div style="background: white;left: 70px;top: 35px;position: relative;border-style: solid;border-color:black;border-radius: 50px;width: 70px;height: 70px;" id="section-item-image">
+            <i style=" margin: 2px 0px 0px 14px; font-size: 60px; " class="fas fa-dollar-sign"></i>
+        </div>
+        <div style="padding: 35px 5px 0px 20px;border-style: solid;border-color:black;width: 220px;height: 320px;" id="section-item-content-2">
+            <h3>Convenient</h3>
+            <br>
+            <p>We have a large selection of privately owned cars to suit your needs
+                throughout the country</p>
+        </div>
+    </div>
+    <div style="margin: 20px 90px 0px 90px;width: 220px;height: 390px; float:left" id="section-item-3">
+        <div style="background: white;left: 70px;top: 35px;position: relative;border-style: solid;border-color:black;border-radius: 50px;width: 70px;height: 70px;" id="section-item-image">
+            <i style=" margin: 2px 0px 0px 14px; font-size: 60px; " class="fas fa-dollar-sign"></i>
+        </div>
+        <div style="padding: 35px 0px 0px 20px;border-style: solid;border-color:black;width: 220px;height: 320px;" id="section-item-content-3">
+            <h3>Legal and insurance</h3>
+            <br>
+            <p>We fully cover all rentals and even provide roadside assistance. Our
+                rating system and extended member profile checks provide safety</p>
+        </div>
+    </div>
+    <div style="margin: 20px 90px 0px 90px;width: 220px;height: 390px; float:left" id="section-item-4">
+        <div style="background: white;left: 70px;top: 35px;position: relative;border-style: solid;border-color:black;border-radius: 50px;width: 70px;height: 70px;" id="section-item-image">
+            <i style=" margin: 2px 0px 0px 14px; font-size: 60px; " class="fas fa-dollar-sign"></i>
+        </div>
+        <div style="padding: 35px 0px 0px 20px;border-style: solid;border-color:black;width: 220px;height: 320px;" id="section-item-content-4">
+            <h3>24/7 support</h3>
+            <br>
+            <p>Our team is ready to support you all along the way with our 24/7 hotline and
+                services</p>
+        </div>
+    </div>
+</div>
+<div style="background: #8080805c;padding: 20px 50px 80px 20px;width:100%;height: 450px;" id="people-say">
+    <h2 style="width:100%; height:25px;">What people say?</h2>
+    <div th:each="item : ${feedbackData}" style="float:left;margin: 40px 50px 40px 70px;height: 35%;width: 40%;height 100px" id="item-people-say">
+        <div style="margin-right: 10px;border-radius: 90px;height: 100%;width: 20%;float:left" id="img-people-say">
+            <img style="width:100%;height:100%;border-radius: 100px" src="https://cms.imgworlds.com/assets/9558de9d-1e49-437e-aa7b-b8bd4d999b00.jpg?key=home-gallery" alt="Girl in a jacket" width="500" height="600">
+        </div>
+        <div style="float: left;height: 100%;width: 75%;" id="content-people-say">
+            <p th:text="${item.UserName}" style="margin: 0px 0px 0px 0px;"></p>
+            <p th:text="${item.FeedbackContent}" style="margin: 0px 0px 0px 0px;"></p>
+            <p th:text="${item.Rating}" style="margin: 0px 0px 0px 0px;"></p>
+            <p th:text="${item.Date}" style="margin: 0px 0px 0px 0px;"></p>
+        </div>
+    </div>
+</div>
+<div style="padding: 20px 50px 80px 20px;width:100%;height: 670px;" id="find-us">
+    <h2 style="width:100%; height:25px;">Where to find us?</h2>
+    <div th:each="item : ${carData}"
+         th:style="'background-image: url(' + ${item.image} + ');color:white; padding: 145px 0px 0px 5px; float: left; margin: 50px; width: 27%; height: 40%;'">
+        <h3 th:text="${item.address}">>Address</h3>
+        <h3 th:text="${item.car_count_rounded}">>cars</h3>
+    </div>
+</div>
+<div style="background: #8080805c;padding: 20px 50px 80px 20px;width:100%;height: 300px;" id="footer">
+    <div style="float:left; height:100%; width: 27%">
+        <h3>ahihi</h3>
+        <br>
+        <h4>ahihi123</h4>
+        <h4>ahihi123</h4>
+        <h4>ahihi123</h4>
+        <h4>ahihi123</h4>
+    </div>
+    <div style="float:left; height:100%; width: 27%">
+        <h3>ahihi</h3>
+        <br>
+        <h4>ahihi123</h4>
+        <h4>ahihi123</h4>
+        <h4>ahihi123</h4>
+        <h4>ahihi123</h4>
+    </div>
+    <div style="float:left; height:100%; width: 27%">
+        <h3>ahihi</h3>
+        <br>
+        <h4>ahihi123</h4>
+        <h4>ahihi123</h4>
+        <h4>ahihi123</h4>
+        <h4>ahihi123</h4>
+    </div>
+
+</div>
+<!-- Bootstrap JS và các phụ thuộc từ CDN -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -10,7 +10,9 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Builder
+@IdClass(AdditionalfunctionsId.class)  // Chỉ định lớp ID composite
 public class Additionalfunctions {
+
     @Id
     @Column(nullable = false)
     Integer idcar;
@@ -18,4 +20,6 @@ public class Additionalfunctions {
     @Id
     @Column(nullable = false, length = 200)
     String namefunctions;
+
+    // Các thuộc tính khác nếu có
 }
