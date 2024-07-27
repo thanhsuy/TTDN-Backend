@@ -6,34 +6,34 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import com.example.SpringBootLearning.dto.respone.ApiReponse;
+import com.example.SpringBootLearning.dto.respone.ApiResponse;
 
 @ControllerAdvice
 public class GlobalExceptionHandling {
     @ExceptionHandler(value = AppException.class)
-    public ResponseEntity<ApiReponse> handlingAppException(AppException exception) {
-        ApiReponse apiReponse = new ApiReponse();
-        apiReponse.setCode(exception.getErrorCode().getCode());
-        apiReponse.setMessage(exception.getErrorCode().getMessage());
-        return ResponseEntity.status(exception.getErrorCode().getStatusCode()).body(apiReponse);
+    public ResponseEntity<ApiResponse> handlingAppException(AppException exception) {
+        ApiResponse apiResponse = new ApiResponse();
+        apiResponse.setCode(exception.getErrorCode().getCode());
+        apiResponse.setMessage(exception.getErrorCode().getMessage());
+        return ResponseEntity.status(exception.getErrorCode().getStatusCode()).body(apiResponse);
     }
 
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
-    public ResponseEntity<ApiReponse> handlingMethodArgumentNotValidException(MethodArgumentNotValidException exception) {
+    public ResponseEntity<ApiResponse> handlingMethodArgumentNotValidException(MethodArgumentNotValidException exception) {
         String errorKey = exception.getFieldError().getDefaultMessage();
         ErrorCode errorCode = ErrorCode.valueOf(errorKey);
-        ApiReponse apiReponse = new ApiReponse();
-        apiReponse.setMessage(errorCode.getMessage());
-        apiReponse.setCode(errorCode.getCode());
-        return ResponseEntity.badRequest().body(apiReponse);
+        ApiResponse apiResponse = new ApiResponse();
+        apiResponse.setMessage(errorCode.getMessage());
+        apiResponse.setCode(errorCode.getCode());
+        return ResponseEntity.badRequest().body(apiResponse);
     }
 
     @ExceptionHandler(value = AccessDeniedException.class)
-    ResponseEntity<ApiReponse> handlingAccessDeniedException(AccessDeniedException exception) {
+    ResponseEntity<ApiResponse> handlingAccessDeniedException(AccessDeniedException exception) {
         ErrorCode errorCode = ErrorCode.UNAUTHORIZED;
 
         return ResponseEntity.status(errorCode.getStatusCode())
-                .body(ApiReponse.builder()
+                .body(ApiResponse.builder()
                         .code(errorCode.getCode())
                         .message(errorCode.getMessage())
                         .build());

@@ -10,7 +10,7 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Builder
-public class ApiReponse<T> {
+public class ApiResponse<T> {
     @Builder.Default
     int code = 1000;
     @Builder.Default

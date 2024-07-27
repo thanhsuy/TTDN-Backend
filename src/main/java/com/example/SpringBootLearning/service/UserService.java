@@ -2,13 +2,12 @@ package com.example.SpringBootLearning.service;
 
 import com.example.SpringBootLearning.dto.request.ForgotPasswordRequest;
 import com.example.SpringBootLearning.dto.respone.UserRespone;
-import com.example.SpringBootLearning.enums.Roles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 
 import com.example.SpringBootLearning.entity.User;
@@ -16,10 +15,8 @@ import com.example.SpringBootLearning.exception.AppException;
 import com.example.SpringBootLearning.exception.ErrorCode;
 import com.example.SpringBootLearning.mapper.UserMapper;
 import com.example.SpringBootLearning.repository.UserRepository;
-import com.example.SpringBootLearning.dto.respone.ApiReponse;
+import com.example.SpringBootLearning.dto.respone.ApiResponse;
 import com.example.SpringBootLearning.dto.request.UserCreationRequest;
-
-import java.util.HashSet;
 
 @Service
 public class UserService {
@@ -33,11 +30,11 @@ public class UserService {
     private PasswordEncoder passwordEncoder;
 
     @PreAuthorize("hasRole('ADMIN')")
-    public ApiReponse getUsers() {
-        ApiReponse apiReponse = new ApiReponse();
-        apiReponse.setResult(userRepository.findAll());
-        apiReponse.setMessage("Sucess");
-        return apiReponse;
+    public ApiResponse getUsers() {
+        ApiResponse apiResponse = new ApiResponse();
+        apiResponse.setResult(userRepository.findAll());
+        apiResponse.setMessage("Sucess");
+        return apiResponse;
     }
 
     public UserRespone getUserById(String userId) {
@@ -48,32 +45,36 @@ public class UserService {
     public UserRespone getMyInfo(){
         var context = SecurityContextHolder.getContext();
         String email = context.getAuthentication().getName();
+
+        Jwt jwt = (Jwt) context.getAuthentication().getPrincipal();
+        var claims = jwt.getClaims();
+        System.out.println(claims.get("id").getClass());
         return userMapper.toUserRespone(userRepository.findByEmail(email).orElseThrow(() -> new AppException(ErrorCode.USER_NOTFOUND)));
     }
 
-    public ApiReponse createUser(UserCreationRequest request) {
+    public ApiResponse createUser(UserCreationRequest request) {
         User user = userMapper.toUser(request);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         if (userRepository.existsByEmail(request.getEmail())) {
             throw new AppException(ErrorCode.USER_EXISTED);
         }
         userRepository.save(user);
-        ApiReponse apiReponse = new ApiReponse();
-        apiReponse.setResult(user);
-        return apiReponse;
+        ApiResponse apiResponse = new ApiResponse();
+        apiResponse.setResult(user);
+        return apiResponse;
     }
 
-    public ApiReponse updateUser(String userId, UserCreationRequest request) {
+    public ApiResponse updateUser(String userId, UserCreationRequest request) {
         User user = userRepository.findById(userId).orElseThrow(() -> new AppException(ErrorCode.USER_NOTFOUND));
-        ApiReponse apiReponse = new ApiReponse();
+        ApiResponse apiResponse = new ApiResponse();
         user = userMapper.updateUser(user,request);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
-        apiReponse.setResult(userRepository.save(user));
-        return apiReponse;
+        apiResponse.setResult(userRepository.save(user));
+        return apiResponse;
     }
 
-    public ApiReponse fotgotPassword(ForgotPasswordRequest request) {
+    public ApiResponse fotgotPassword(ForgotPasswordRequest request) {
         User user = userRepository.findByEmail(request.getEmail()).orElseThrow(() -> new AppException(ErrorCode.USER_NOTFOUND));
         if(request.getNewpassword().equals(request.getConfirmpassword()) && request.getNewpassword().equals(request.getConfirmpassword()))
         {
@@ -85,24 +86,24 @@ public class UserService {
         System.out.println(request.getConfirmpassword());
 
         userRepository.save(user);
-        ApiReponse apiReponse = new ApiReponse()
+        ApiResponse apiResponse = new ApiResponse()
                 .builder()
                 .result(user)
                 .build();
-        return apiReponse;
+        return apiResponse;
     }
 
-    public ApiReponse deleteUser(String userId) {
+    public ApiResponse deleteUser(String userId) {
         userRepository.deleteById(userId);
-        ApiReponse apiReponse = new ApiReponse();
-        apiReponse.setMessage("Xóa thành công");
-        return apiReponse;
+        ApiResponse apiResponse = new ApiResponse();
+        apiResponse.setMessage("Xóa thành công");
+        return apiResponse;
     }
 
-    public ApiReponse deleteAllUser() {
+    public ApiResponse deleteAllUser() {
         userRepository.deleteAll();
-        ApiReponse apiReponse = new ApiReponse();
-        apiReponse.setMessage("Xóa thành công");
-        return apiReponse;
+        ApiResponse apiResponse = new ApiResponse();
+        apiResponse.setMessage("Xóa thành công");
+        return apiResponse;
     }
 }

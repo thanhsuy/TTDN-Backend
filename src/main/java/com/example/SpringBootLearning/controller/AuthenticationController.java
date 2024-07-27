@@ -2,13 +2,12 @@ package com.example.SpringBootLearning.controller;
 
 import com.example.SpringBootLearning.dto.request.AuthenticationRequest;
 import com.example.SpringBootLearning.dto.request.IntrospectRequest;
-import com.example.SpringBootLearning.dto.respone.ApiReponse;
+import com.example.SpringBootLearning.dto.respone.ApiResponse;
 import com.example.SpringBootLearning.dto.respone.AuthenticationRespone;
 import com.example.SpringBootLearning.dto.respone.IntrospectRespone;
 import com.example.SpringBootLearning.service.AuthenticationService;
 import com.nimbusds.jose.JOSEException;
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.web.bind.annotation.*;
@@ -23,20 +22,17 @@ public class AuthenticationController {
     AuthenticationService authenticationService;
     @PostMapping("/login")
     @CrossOrigin(origins = "http://localhost:3000")
-    public ApiReponse<AuthenticationRespone> authenticate(@RequestBody AuthenticationRequest authenticationRequest){
+    public ApiResponse<AuthenticationRespone> authenticate(@RequestBody AuthenticationRequest authenticationRequest){
         var result = authenticationService.authenticate(authenticationRequest);
-        ApiReponse apiReponse = new ApiReponse();
-        apiReponse.setResult(result);
-        System.out.println(authenticationRequest.getEmail());
-        System.out.println(authenticationRequest.getPassword());
-        System.out.println("controller sucess");
-        return apiReponse;
+        ApiResponse apiResponse = new ApiResponse();
+        apiResponse.setResult(result);
+        return apiResponse;
     }
     @PostMapping("/introspect")
-    public ApiReponse<IntrospectRespone> instrospect(@RequestBody IntrospectRequest request) throws ParseException, JOSEException {
+    public ApiResponse<IntrospectRespone> instrospect(@RequestBody IntrospectRequest request) throws ParseException, JOSEException {
         var result = authenticationService.introspect(request);
-        ApiReponse apiReponse = new ApiReponse();
-        apiReponse.setResult(result);
-        return apiReponse;
+        ApiResponse apiResponse = new ApiResponse();
+        apiResponse.setResult(result);
+        return apiResponse;
     }
 }

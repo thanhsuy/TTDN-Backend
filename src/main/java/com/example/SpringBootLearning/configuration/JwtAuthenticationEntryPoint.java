@@ -1,6 +1,6 @@
 package com.example.SpringBootLearning.configuration;
 
-import com.example.SpringBootLearning.dto.respone.ApiReponse;
+import com.example.SpringBootLearning.dto.respone.ApiResponse;
 import com.example.SpringBootLearning.exception.ErrorCode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
@@ -19,13 +19,14 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
         ErrorCode errorCode = ErrorCode.UNAUTHENTICATED;
         response.setStatus(errorCode.getStatusCode().value());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-        ApiReponse<?> apiReponse = ApiReponse
+        ApiResponse<?> apiResponse = ApiResponse
                 .builder()
                 .code(errorCode.getCode())
                 .message(errorCode.getMessage())
                 .build();
         ObjectMapper objectMapper = new ObjectMapper();
-        response.getWriter().write(objectMapper.writeValueAsString(apiReponse));
+        response.getWriter().write(objectMapper.writeValueAsString(apiResponse));
+        System.out.println("KHONG THE XAC THUC");
         response.flushBuffer();
     }
 }
