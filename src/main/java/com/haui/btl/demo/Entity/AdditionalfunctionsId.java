@@ -1,18 +1,11 @@
 package com.haui.btl.demo.Entity;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.experimental.FieldDefaults;
-
 import java.io.Serializable;
+import java.util.Objects;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE)
 public class AdditionalfunctionsId implements Serializable {
-    Integer idcar;
-    String namefunctions;
+    private int idCar;
+    private String nameTerms;
+
+    // Constructors, getters, setters, equals, and hashCode methods
 }
