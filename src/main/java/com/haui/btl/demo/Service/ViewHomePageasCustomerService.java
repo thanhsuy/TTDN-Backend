@@ -6,6 +6,7 @@ import com.haui.btl.demo.Exception.AppException;
 import com.haui.btl.demo.Exception.ErrorCode;
 import com.haui.btl.demo.Handler.Sorted.FeedbackSorter;
 import com.haui.btl.demo.Mapper.FeedbackMapper;
+import com.haui.btl.demo.Repository.CarRepository;
 import com.haui.btl.demo.Repository.FeedbackRepository;
 import com.haui.btl.demo.Repository.UserRepository;
 import com.haui.btl.demo.dto.response.ApiResponse;
@@ -29,6 +30,9 @@ public class ViewHomePageasCustomerService {
 
     @Autowired
     FeedbackMapper feedbackMapper;
+
+    @Autowired
+    CarRepository carRepository;
 
     public List<Feedback> getTopFeedBack(){
         List<Feedback> allFeedback = feedbackRepository.findAll();
@@ -64,4 +68,10 @@ public class ViewHomePageasCustomerService {
         User user = userRepository.findByEmail(email).orElseThrow(() -> new AppException(ErrorCode.USER_NOTFOUND));
         return new AuthenResponse(user.getRole());
     }
+    public ApiResponse<List<Object[]>> getTop5CitiesWithMostCars() {
+        ApiResponse<List<Object[]>> apiResponse = new ApiResponse<>();
+        apiResponse.setResult(carRepository.findTop5CitiesWithMostCars());
+        return apiResponse;
+    }
+
 }

@@ -29,4 +29,9 @@ public class ViewHomePageasCustomerController {
                 .result(ViewHomePageasCustomerService.getUserRole())
                 .build();
     }
+
+    @GetMapping("/top-cities")
+    public ApiResponse<List<Object[]>> getTop5CitiesWithMostCars() {
+        return viewHomePageasCustomerService.getTop5CitiesWithMostCars();
+    }
 }
