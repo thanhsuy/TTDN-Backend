@@ -64,6 +64,7 @@ public class SearchCarService {
             searchCarResponse.setCar(i);
             searchCarResponse.setRate(calculateAverageRateForCar(i.getIdcar()));
             searchCarResponse.setBookingNumber(countBookingsForCar(i.getIdcar()));
+            searchCarResponseList.add(searchCarResponse);
         }
         apiResponse.setResult(searchCarResponseList);
         return apiResponse;
