@@ -10,8 +10,8 @@ import java.util.List;
 
 
 @Repository
-public interface CarRepository extends JpaRepository<Car, Integer>, CarRepositoryCustom {
 
+public interface CarRepository extends JpaRepository<Car, Integer>, CarRepositoryCustom<Car> {
     @Query("SELECT SUBSTRING_INDEX(c.address, ',', -1) AS city, COUNT(c.idcar) AS carCount " +
             "FROM Car c " +
             "GROUP BY city " +
