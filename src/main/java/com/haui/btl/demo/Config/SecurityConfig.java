@@ -28,7 +28,8 @@ public class SecurityConfig {
                     "/user/create",
                     "/auth/login",
                     "/auth/introspect",
-                    "/user/forgot"
+                    "/user/forgot",
+                    "/cars/**" // Thêm endpoint này vào danh sách công khai
             };
     private String SERCRET_KEY = "0aPglnnROU/zGjIuvAA32LpDzmqEY2O7J4fgQ4Eh+4KuJaSCXQIFQgBv6a69Pvkt";
 
@@ -39,6 +40,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers(HttpMethod.POST, PUBLIC_ENDPOINT).permitAll()
                         .requestMatchers(HttpMethod.PUT, PUBLIC_ENDPOINT).permitAll()
+                        .requestMatchers(HttpMethod.GET, PUBLIC_ENDPOINT).permitAll() // Thêm dòng này để GET cũng được phép
                         .anyRequest().authenticated()
                 );
         httpSecurity.oauth2ResourceServer(oauth2 -> oauth2
