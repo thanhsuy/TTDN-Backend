@@ -26,8 +26,8 @@ public class ViewCarDetailsService {
 
     public ViewCarDetailsResponse getCarDetails(int id) {
         Car car = carRepository.findById(id).orElseThrow(() -> new RuntimeException("Car not found"));
-        List<Termofuse> termsOfUse = termofuseRepository.findByIdcar(id);
-        List<Additionalfunctions> additionalFunctions = additionalfunctionsRepository.findByIdcar(id);
+        Termofuse termsOfUse = (Termofuse) termofuseRepository.findByIdcar(id);
+        Additionalfunctions additionalFunctions = (Additionalfunctions) additionalfunctionsRepository.findByIdcar(id);
 
         return ViewCarDetailsResponse.builder()
                 .car(car)

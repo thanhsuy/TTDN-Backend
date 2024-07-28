@@ -11,6 +11,6 @@ import java.util.List;
 @Repository
 public interface AdditionalfunctionsRepository extends JpaRepository<Additionalfunctions, AdditionalfunctionsId> {
 
-    List<Additionalfunctions> findByIdcar(int idcar);
+    Additionalfunctions findByIdcar(int idcar);
 
 }

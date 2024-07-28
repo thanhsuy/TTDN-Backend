@@ -14,6 +14,6 @@ import java.util.List;
 @AllArgsConstructor
 public class ViewCarDetailsResponse {
     private Car car;
-    private List<Termofuse> termsOfUse;
-    private List<Additionalfunctions> additionalFunctions;
+    private Termofuse termsOfUse;
+    private Additionalfunctions additionalFunctions;
 }

@@ -9,5 +9,5 @@ import java.util.List;
 
 @Repository
 public interface TermofuseRepository extends JpaRepository<Termofuse, TermofuseId> {
-    List<Termofuse> findByIdcar(int idcar);
+    Termofuse findByIdcar(int idcar);
 }
