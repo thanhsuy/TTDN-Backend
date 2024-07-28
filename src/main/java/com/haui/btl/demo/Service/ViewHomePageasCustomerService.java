@@ -61,7 +61,7 @@ public class ViewHomePageasCustomerService {
         return apiResponse;
     }
 
-    @PostAuthorize("returnObject.email == authentication.name")
+//    @PostAuthorize("returnObject.email == authentication.name")
     public AuthenResponse getUserRole(){
         var context = SecurityContextHolder.getContext();
         String email = context.getAuthentication().getName();
