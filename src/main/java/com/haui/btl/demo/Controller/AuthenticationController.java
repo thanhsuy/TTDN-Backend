@@ -33,6 +33,7 @@ public class AuthenticationController {
         return apiReponse;
     }
     @PostMapping("/introspect")
+    @CrossOrigin(origins = "http://localhost:3000")
     public ApiResponse<IntrospectRespone> instrospect(@RequestBody IntrospectRequest request) throws ParseException, JOSEException {
         var result = authenticationService.introspect(request);
         ApiResponse apiReponse = new ApiResponse();

@@ -1,6 +1,7 @@
 package com.haui.btl.demo.Service;
 
 
+import com.haui.btl.demo.Config.JwtTokenProvider;
 import com.haui.btl.demo.Entity.User;
 import com.haui.btl.demo.Exception.AppException;
 import com.haui.btl.demo.Exception.ErrorCode;
@@ -27,6 +28,15 @@ public class UserService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private JwtTokenProvider jwtTokenProvider;
+
+    public UserRespone getUserInfoFromToken(String token) {
+        String email = jwtTokenProvider.getUsernameFromToken(token);
+        return userMapper.toUserRespone(userRepository.findByEmail(email)
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOTFOUND)));
+    }
 
     @PreAuthorize("hasRole('ADMIN')")
     public ApiResponse getUsers() {
