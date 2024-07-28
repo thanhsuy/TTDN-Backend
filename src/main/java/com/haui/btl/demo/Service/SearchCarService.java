@@ -56,7 +56,7 @@ public class SearchCarService {
         List<Car> allCars = carRepository.findAll();
         ApiResponse<List<SearchCarResponse>> apiResponse = new ApiResponse<>();
         List<Car> carListSearch = allCars.stream()
-                                  .filter(car -> car.getAddress().contains(searchCarRequest.getAddress()) && "available".equalsIgnoreCase(car.getStatus()))
+                                  .filter(car -> car.getAddress().contains(searchCarRequest.getAddress()) && "Available".equalsIgnoreCase(car.getStatus()))
                                   .toList();
         List<SearchCarResponse> searchCarResponseList = new ArrayList<>();
         for (Car i : carListSearch){
@@ -64,6 +64,7 @@ public class SearchCarService {
             searchCarResponse.setCar(i);
             searchCarResponse.setRate(calculateAverageRateForCar(i.getIdcar()));
             searchCarResponse.setBookingNumber(countBookingsForCar(i.getIdcar()));
+            searchCarResponseList.add(searchCarResponse);
         }
         apiResponse.setResult(searchCarResponseList);
         return apiResponse;

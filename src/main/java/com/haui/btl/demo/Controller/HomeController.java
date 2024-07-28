@@ -48,7 +48,7 @@ public class HomeController {
 
         String sql2 = "SELECT u.name AS `UserName`, f.content AS `FeedbackContent`, f.rate AS `Rating`, f.dateTime AS `Date` " +
                 "FROM feedback f " +
-                "JOIN booking b ON b.FeedBack_idFeedBack = f.idFeedBack " +
+                "JOIN booking b ON b.idBooking = f.Booking_idBooking " +
                 "JOIN user u ON u.idUser = b.User_idUser " +
                 "WHERE f.rate = 5 " +
                 "AND f.content IS NOT NULL " +

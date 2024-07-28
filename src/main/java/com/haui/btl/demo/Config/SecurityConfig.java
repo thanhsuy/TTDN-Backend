@@ -24,7 +24,7 @@ import javax.crypto.spec.SecretKeySpec;
 public class SecurityConfig {
     private final String[] PUBLIC_ENDPOINT =
             {
-                    "/",
+                    "/viewHomepage/*",
                     "/user/create",
                     "/auth/login",
                     "/auth/introspect",
@@ -39,6 +39,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers(HttpMethod.POST, PUBLIC_ENDPOINT).permitAll()
                         .requestMatchers(HttpMethod.PUT, PUBLIC_ENDPOINT).permitAll()
+                        .requestMatchers(HttpMethod.GET, PUBLIC_ENDPOINT).permitAll()
                         .anyRequest().authenticated()
                 );
         httpSecurity.oauth2ResourceServer(oauth2 -> oauth2
