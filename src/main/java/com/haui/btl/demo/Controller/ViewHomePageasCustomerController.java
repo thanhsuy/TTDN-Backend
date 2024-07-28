@@ -26,7 +26,7 @@ public class ViewHomePageasCustomerController {
     @GetMapping("/auth")
     public ApiResponse<AuthenResponse> authRole(){
         return ApiResponse.<AuthenResponse>builder()
-                .result(ViewHomePageasCustomerService.getUserRole())
+                .result(viewHomePageasCustomerService.getUserRole())
                 .build();
     }
 

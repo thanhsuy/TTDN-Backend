@@ -26,7 +26,7 @@ public class ViewHomePageasCustomerService {
     FeedbackRepository feedbackRepository;
 
     @Autowired
-    static UserRepository userRepository;
+    UserRepository userRepository;
 
     @Autowired
     FeedbackMapper feedbackMapper;
@@ -62,7 +62,7 @@ public class ViewHomePageasCustomerService {
     }
 
     @PostAuthorize("returnObject.email == authentication.name")
-    public static AuthenResponse getUserRole(){
+    public AuthenResponse getUserRole(){
         var context = SecurityContextHolder.getContext();
         String email = context.getAuthentication().getName();
         User user = userRepository.findByEmail(email).orElseThrow(() -> new AppException(ErrorCode.USER_NOTFOUND));
