@@ -14,6 +14,7 @@ public enum ErrorCode {
     UNAUTHENTICATED(1006, "Khong the xac thuc tai khoan",HttpStatus.UNAUTHORIZED),
     UNAUTHORIZED(1007, "Khong co quyen truy cap", HttpStatus.FORBIDDEN),
     PASSWORC_NOTEQUAL (1008, "Mật khẩu không trùng khớp", HttpStatus.BAD_REQUEST),
+    CAR_NOTFOUND(1009, "Không tìm thấy xe!!", HttpStatus.BAD_REQUEST),
     ;
     ErrorCode(int code, String message, HttpStatusCode statusCode) {
         this.code = code;

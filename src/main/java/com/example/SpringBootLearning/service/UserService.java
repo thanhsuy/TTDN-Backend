@@ -2,6 +2,8 @@ package com.example.SpringBootLearning.service;
 
 import com.example.SpringBootLearning.dto.request.ForgotPasswordRequest;
 import com.example.SpringBootLearning.dto.respone.UserRespone;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -20,6 +22,7 @@ import com.example.SpringBootLearning.dto.request.UserCreationRequest;
 
 @Service
 public class UserService {
+    private static final Logger log = LoggerFactory.getLogger(UserService.class);
     @Autowired
     private UserRepository userRepository;
 
@@ -46,9 +49,8 @@ public class UserService {
         var context = SecurityContextHolder.getContext();
         String email = context.getAuthentication().getName();
 
-        Jwt jwt = (Jwt) context.getAuthentication().getPrincipal();
-        var claims = jwt.getClaims();
-        System.out.println(claims.get("id").getClass());
+        log.info("USERNAME: {}",context.getAuthentication().getName());
+        log.info("ROLE {}", context.getAuthentication().getAuthorities());
         return userMapper.toUserRespone(userRepository.findByEmail(email).orElseThrow(() -> new AppException(ErrorCode.USER_NOTFOUND)));
     }
 
