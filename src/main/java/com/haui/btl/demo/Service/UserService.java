@@ -46,7 +46,7 @@ public class UserService {
         return apiReponse;
     }
 
-    public UserRespone getUserById(String userId) {
+    public UserRespone getUserById(Integer userId) {
         return userMapper.toUserRespone(userRepository.findById(userId).orElseThrow(() -> new AppException(ErrorCode.USER_NOTFOUND)));
     }
 
@@ -79,7 +79,7 @@ public class UserService {
 //        return apiReponse;
 //    }
 
-    public ApiResponse updateUser(String userId, UserCreationRequest request) {
+    public ApiResponse updateUser(Integer userId, UserCreationRequest request) {
         User user = userRepository.findById(userId).orElseThrow(() -> new AppException(ErrorCode.USER_NOTFOUND));
         ApiResponse apiResponse = new ApiResponse();
 
@@ -114,7 +114,7 @@ public class UserService {
         return apiReponse;
     }
 
-    public ApiResponse deleteUser(String userId) {
+    public ApiResponse deleteUser(Integer userId) {
         userRepository.deleteById(userId);
         ApiResponse apiReponse = new ApiResponse();
         apiReponse.setMessage("Xóa thành công");
@@ -129,7 +129,7 @@ public class UserService {
     }
 
     public User updateProfile(Long id, User updatedUser) {
-        User user = userRepository.findById(String.valueOf(id)).orElseThrow(() -> new AppException(ErrorCode.USER_NOTFOUND));
+        User user = userRepository.findById(Math.toIntExact(id)).orElseThrow(() -> new AppException(ErrorCode.USER_NOTFOUND));
         user.setName(updatedUser.getName());
         user.setDateofbirth(updatedUser.getDateofbirth());
         user.setEmail(updatedUser.getEmail());

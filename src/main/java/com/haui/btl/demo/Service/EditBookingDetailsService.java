@@ -80,7 +80,7 @@ public class EditBookingDetailsService {
     private String getPaymentInstruction(Booking booking) {
         String paymentInstruction = "";
         if ("my wallet".equals(booking.getPaymentmethod())) {
-            Optional<User> userOptional = userRepository.findById(String.valueOf(booking.getUserIduser()));
+            Optional<User> userOptional = userRepository.findById(booking.getUserIduser());
             if (userOptional.isPresent()) {
                 User user = userOptional.get();
                 paymentInstruction = "Current wallet balance: " + user.getWallet() + ". Please make sure to have sufficient balance when you return the car. [Link to Wallet]";
