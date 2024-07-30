@@ -1,6 +1,5 @@
 package com.haui.btl.demo.Controller;
 
-import com.haui.btl.demo.Entity.Booking;
 import com.haui.btl.demo.Service.EditBookingDetailsService;
 import com.haui.btl.demo.dto.request.EditBookingDetailsRequest;
 import com.haui.btl.demo.dto.response.ViewBookingListResponse;

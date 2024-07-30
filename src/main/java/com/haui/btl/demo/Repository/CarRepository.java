@@ -18,5 +18,6 @@ public interface CarRepository extends JpaRepository<Car, Integer>, CarRepositor
             "LIMIT 5")
     List<Object[]> findTop5CitiesWithMostCars();
 
+    List<Car> findAllByidcarowner(Long idCarOwner);
 
 }

@@ -10,7 +10,6 @@ import java.util.List;
 
 @Repository
 public interface AdditionalfunctionsRepository extends JpaRepository<Additionalfunctions, AdditionalfunctionsId> {
-
     Additionalfunctions findByIdcar(int idcar);
 
 }

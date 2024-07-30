@@ -14,6 +14,11 @@ public enum ErrorCode {
     UNAUTHENTICATED(1006, "Khong the xac thuc tai khoan",HttpStatus.UNAUTHORIZED),
     UNAUTHORIZED(1007, "Khong co quyen truy cap", HttpStatus.FORBIDDEN),
     PASSWORC_NOTEQUAL (1008, "Mật khẩu không trùng khớp", HttpStatus.BAD_REQUEST),
+    CAR_NOTFOUND(1009, "Không tìm thấy xe!!", HttpStatus.BAD_REQUEST),
+    BOOKING_NOTFOUND(1010, "Không tìm thấy booking", HttpStatus.BAD_REQUEST),
+    NOTENOUGH_WALLET(1011, "Your wallet doesn’t have enough balance. Please top-up your wallet and try again", HttpStatus.BAD_REQUEST),
+    STOP_CAR_FAIL(1012, "Hiện tại không thể Stop phương tiện này", HttpStatus.BAD_REQUEST),
+    CAROWNER_CONFIRM(1013, "Chủ xe chưa xác nhận thanh toán!!", HttpStatus.BAD_REQUEST),
     ;
     ErrorCode(int code, String message, HttpStatusCode statusCode) {
         this.code = code;
