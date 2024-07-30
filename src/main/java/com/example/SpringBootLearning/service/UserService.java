@@ -40,7 +40,7 @@ public class UserService {
         return apiResponse;
     }
 
-    public UserRespone getUserById(String userId) {
+    public UserRespone getUserById(Integer userId) {
         return userMapper.toUserRespone(userRepository.findById(userId).orElseThrow(() -> new AppException(ErrorCode.USER_NOTFOUND)));
     }
 
@@ -66,7 +66,7 @@ public class UserService {
         return apiResponse;
     }
 
-    public ApiResponse updateUser(String userId, UserCreationRequest request) {
+    public ApiResponse updateUser(Integer userId, UserCreationRequest request) {
         User user = userRepository.findById(userId).orElseThrow(() -> new AppException(ErrorCode.USER_NOTFOUND));
         ApiResponse apiResponse = new ApiResponse();
         user = userMapper.updateUser(user,request);
@@ -95,7 +95,7 @@ public class UserService {
         return apiResponse;
     }
 
-    public ApiResponse deleteUser(String userId) {
+    public ApiResponse deleteUser(Integer userId) {
         userRepository.deleteById(userId);
         ApiResponse apiResponse = new ApiResponse();
         apiResponse.setMessage("Xóa thành công");

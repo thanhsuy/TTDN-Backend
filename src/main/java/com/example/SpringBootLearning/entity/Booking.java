@@ -7,6 +7,7 @@ import jakarta.persistence.Id;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -20,8 +21,8 @@ public class Booking {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer idbooking;
     String bookingno;
-    LocalDateTime startdatetime;
-    LocalDateTime enddatetime;
+    LocalDate startdatetime;
+    LocalDate enddatetime;
     String driversinformation;
     String paymentmethod;
     String status;

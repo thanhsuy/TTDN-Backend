@@ -1,5 +1,6 @@
 package com.example.SpringBootLearning.service;
 
+import com.example.SpringBootLearning.dto.request.RentACarRequest;
 import com.example.SpringBootLearning.dto.respone.ApiResponse;
 import com.example.SpringBootLearning.entity.Booking;
 import com.example.SpringBootLearning.entity.Car;
@@ -16,42 +17,43 @@ import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.awt.print.Book;
 
 @Service
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @RequiredArgsConstructor
 @Builder
-public class CancelBookingService {
+public class ReturnCarService {
     CarRepository carRepository;
     BookingRepository bookingRepository;
     BookingMapper bookingMapper;
     UserRepository userRepository;
 
     @PreAuthorize("hasRole('CUSTOMER')")
-    public ApiResponse cancelBooking(Integer idbooking){
-        System.out.println(idbooking);
+    public ApiResponse returnCar(Integer idbooking){
         Booking booking = bookingRepository.findById(idbooking).orElseThrow(() -> new AppException(ErrorCode.BOOKING_NOTFOUND));
         User user = userRepository.findById(booking.getUserIduser()).orElseThrow(() -> new AppException(ErrorCode.USER_NOTFOUND));
-        User carowner = userRepository.findById(booking.getCarIdcarowner()).orElseThrow(() -> new AppException(ErrorCode.USER_NOTFOUND));
+        User carOwner = userRepository.findById(booking.getCarIdcarowner()).orElseThrow(() -> new AppException(ErrorCode.USER_NOTFOUND));
         Car car = carRepository.findById(booking.getCarIdcar()).orElseThrow(() -> new AppException(ErrorCode.CAR_NOTFOUND));
-        if(booking.getStatus().equals(BookingStatus.CONFIRMRED.getStatus()))
+        if(booking.getStatus().equals(BookingStatus.IN_PROGRESS.getStatus()))
         {
-            user.setWallet(user.getWallet() + car.getDeposite());
-            carowner.setWallet(carowner.getWallet() - car.getDeposite());
+            float remaining = car.getBaseprice() - car.getDeposite();
+            if (user.getWallet() < remaining){
+                booking.setStatus(BookingStatus.PENDING_PAYMENT.getStatus());
+                bookingRepository.save(booking);
+                throw new AppException(ErrorCode.NOTENOUGH_WALLET);
+            }
+            booking.setStatus(BookingStatus.COMPLETE.getStatus());
+            user.setWallet(user.getWallet() - remaining);
+            carOwner.setWallet(carOwner.getWallet() + remaining);
             userRepository.save(user);
-            userRepository.save(carowner);
-            booking.setStatus(BookingStatus.CANCELLED.getStatus());
+            userRepository.save(carOwner);
             bookingRepository.save(booking);
         }
-        List<User> resArray = new ArrayList<>();
-        resArray.add(user);
-        resArray.add(carowner);
         return new ApiResponse()
                 .builder()
                 .result(booking)

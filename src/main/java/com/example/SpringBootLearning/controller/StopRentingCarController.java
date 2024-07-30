@@ -1,25 +1,28 @@
 package com.example.SpringBootLearning.controller;
 
 import com.example.SpringBootLearning.dto.respone.ApiResponse;
-import com.example.SpringBootLearning.service.ConfirmDepositService;
+import com.example.SpringBootLearning.service.StopRentingCarService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @RequiredArgsConstructor
-public class ConfirmDepositController {
-    ConfirmDepositService confirmDepositService;
+@RequestMapping("/stoprentingcar")
+public class StopRentingCarController {
+    StopRentingCarService stopRentingCarService;
 
-    @PostMapping("/confirmdeposit/{idbooking}")
-    public ApiResponse confirmdeposit(@PathVariable("idbooking") Integer idbooking){
-        return ApiResponse
+    @PostMapping("/{idcar}")
+    public ApiResponse stopRentingCar(@PathVariable("idcar") Integer idcar){
+        return new ApiResponse()
                 .builder()
-                .result(confirmDepositService.confirmDeposit(idbooking))
+                .result(stopRentingCarService.stopRentingCar(idcar))
                 .build();
     }
+
 }
