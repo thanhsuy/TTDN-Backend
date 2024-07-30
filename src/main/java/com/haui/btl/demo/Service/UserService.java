@@ -104,13 +104,8 @@ public class UserService {
 
     public User updateProfile(Long id, User updatedUser) {
         User user = userRepository.findById(String.valueOf(id)).orElseThrow(() -> new AppException(ErrorCode.USER_NOTFOUND));
-        user.setName(updatedUser.getName());
-        user.setDateofbirth(updatedUser.getDateofbirth());
-        user.setPhoneno(updatedUser.getPhoneno());
-        user.setNationalidno(updatedUser.getNationalidno());
-        user.setAddress(updatedUser.getAddress());
-        user.setDrivinglicense(updatedUser.getDrivinglicense());
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        return userRepository.save(user);
+        updatedUser.setIduser(user.getIduser());
+        updatedUser.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
+        return userRepository.save(updatedUser);
     }
 }
