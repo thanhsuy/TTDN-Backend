@@ -69,14 +69,30 @@ public class UserService {
         return apiReponse;
     }
 
+//    public ApiResponse updateUser(String userId, UserCreationRequest request) {
+//        User user = userRepository.findById(userId).orElseThrow(() -> new AppException(ErrorCode.USER_NOTFOUND));
+//        ApiResponse apiReponse = new ApiResponse();
+//        user = userMapper.updateUser(user,request);
+//        user.setPassword(passwordEncoder.encode(user.getPassword()));
+//        userRepository.save(user);
+//        apiReponse.setResult(userRepository.save(user));
+//        return apiReponse;
+//    }
+
     public ApiResponse updateUser(String userId, UserCreationRequest request) {
         User user = userRepository.findById(userId).orElseThrow(() -> new AppException(ErrorCode.USER_NOTFOUND));
-        ApiResponse apiReponse = new ApiResponse();
-        user = userMapper.updateUser(user,request);
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        ApiResponse apiResponse = new ApiResponse();
+
+        // Nếu mật khẩu trong yêu cầu khác với mật khẩu hiện tại, mã hóa lại mật khẩu
+        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+            user.setPassword(passwordEncoder.encode(request.getPassword()));
+        }
+
+        // Cập nhật các trường khác
+        user = userMapper.updateUser(user, request);
         userRepository.save(user);
-        apiReponse.setResult(userRepository.save(user));
-        return apiReponse;
+        apiResponse.setResult(user);
+        return apiResponse;
     }
 
     public ApiResponse fotgotPassword(ForgotPasswordRequest request) {
@@ -116,11 +132,12 @@ public class UserService {
         User user = userRepository.findById(String.valueOf(id)).orElseThrow(() -> new AppException(ErrorCode.USER_NOTFOUND));
         user.setName(updatedUser.getName());
         user.setDateofbirth(updatedUser.getDateofbirth());
+        user.setEmail(updatedUser.getEmail());
         user.setPhoneno(updatedUser.getPhoneno());
         user.setNationalidno(updatedUser.getNationalidno());
         user.setAddress(updatedUser.getAddress());
         user.setDrivinglicense(updatedUser.getDrivinglicense());
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
         return userRepository.save(user);
     }
 }
