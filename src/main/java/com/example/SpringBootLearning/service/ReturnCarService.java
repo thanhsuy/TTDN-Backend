@@ -39,7 +39,7 @@ public class ReturnCarService {
         User user = userRepository.findById(booking.getUserIduser()).orElseThrow(() -> new AppException(ErrorCode.USER_NOTFOUND));
         User carOwner = userRepository.findById(booking.getCarIdcarowner()).orElseThrow(() -> new AppException(ErrorCode.USER_NOTFOUND));
         Car car = carRepository.findById(booking.getCarIdcar()).orElseThrow(() -> new AppException(ErrorCode.CAR_NOTFOUND));
-        if(booking.getStatus().equals(BookingStatus.IN_PROGRESS.getStatus()))
+        if(booking.getStatus().equals(BookingStatus.IN_PROGRESS.getStatus()) || booking.getStatus().equals(BookingStatus.PENDING_PAYMENT.getStatus()))
         {
             float remaining = car.getBaseprice() - car.getDeposite();
             if (user.getWallet() < remaining){
@@ -50,6 +50,8 @@ public class ReturnCarService {
             booking.setStatus(BookingStatus.COMPLETE.getStatus());
             user.setWallet(user.getWallet() - remaining);
             carOwner.setWallet(carOwner.getWallet() + remaining);
+            car.setStatus("Available");
+            carRepository.save(car);
             userRepository.save(user);
             userRepository.save(carOwner);
             bookingRepository.save(booking);

@@ -43,6 +43,7 @@ public class CancelBookingService {
         if(booking.getStatus().equals(BookingStatus.CONFIRMRED.getStatus()))
         {
             user.setWallet(user.getWallet() + car.getDeposite());
+            System.out.println(user.getWallet());
             carowner.setWallet(carowner.getWallet() - car.getDeposite());
             userRepository.save(user);
             userRepository.save(carowner);

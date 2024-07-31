@@ -35,18 +35,21 @@ public class RentACarService {
 
 
     @PreAuthorize("hasRole('CUSTOMER')")
-    public ApiResponse makeABooking(RentACarRequest request,int carIdcar){
+    public ApiResponse makeABooking(RentACarRequest request, int carIdcar){
         Booking booking = bookingMapper.toBooking(request);
         booking.setCarIdcar(carIdcar);
         Car car = carRepository.findById(carIdcar).orElseThrow(() -> new AppException(ErrorCode.CAR_NOTFOUND));
         int idCarOwner = car.getIdcarowner();
-        booking.setCarIdcarowner(idCarOwner);
-        Jwt jwt = (Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Long longIdUser = (Long) jwt.getClaims().get("id");
-        int idUser = longIdUser.intValue();
-        booking.setUserIduser(idUser);
-        booking.setStatus(BookingStatus.PENDING_DEPOSIT.getStatus());
-        bookingRepository.save(booking);
+        if(car.getStatus().equals("Available"))
+        {
+            booking.setCarIdcarowner(idCarOwner);
+            Jwt jwt = (Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            Long longIdUser = (Long) jwt.getClaims().get("id");
+            int idUser = longIdUser.intValue();
+            booking.setUserIduser(idUser);
+            booking.setStatus(BookingStatus.PENDING_DEPOSIT.getStatus());
+            bookingRepository.save(booking);
+        }else throw new AppException(ErrorCode.CAR_NOT_AVAILABLE);
         return new ApiResponse()
                 .builder()
                 .result(booking)
@@ -58,12 +61,11 @@ public class RentACarService {
         User user = userRepository.findById(booking.getUserIduser()).orElseThrow(() -> new AppException(ErrorCode.USER_NOTFOUND));
         Car car = carRepository.findById(booking.getCarIdcar()).orElseThrow(() -> new AppException(ErrorCode.CAR_NOTFOUND));
         System.out.println(user.getWallet());
-        if(booking.getPaymentmethod().equals(PayMentMethod.WALLET.getName())){
+        if(booking.getPaymentmethod().equals(PayMentMethod.WALLET.getName()) && booking.getStatus().equals(BookingStatus.PENDING_DEPOSIT.getStatus())){
             user.setWallet(user.getWallet() - car.getDeposite());
+            booking.setStatus(BookingStatus.PENDING_DEPOSIT.getStatus());
+            userRepository.save(user);
         }
-        booking.setStatus(BookingStatus.PENDING_DEPOSIT.getStatus());
-        System.out.println(user.getWallet());
-        userRepository.save(user);
         return new ApiResponse()
                 .builder()
                 .result(booking)
@@ -78,42 +80,8 @@ public class RentACarService {
                 .build();
     }
 
-//    public ApiResponse cancelBooking(Integer idbooking){
-//        Booking booking = bookingRepository.findById(idbooking).orElseThrow(() -> new AppException(ErrorCode.BOOKING_NOTFOUND));
-//        booking.setStatus(BookingStatus.CANCELLED.getStatus());
-//        return new ApiResponse()
-//                .builder()
-//                .result(booking)
-//                .build();
-//    }
-//    public ApiResponse confirmPickUp(Integer idbooking){
-//        Booking booking = bookingRepository.findById(idbooking).orElseThrow(() -> new AppException(ErrorCode.BOOKING_NOTFOUND));
-//        booking.setStatus(BookingStatus.IN_PROGRESS.getStatus());
-//        return new ApiResponse()
-//                .builder()
-//                .result(booking)
-//                .build();
-//    }
-//    public ApiResponse returnCar(Integer idbooking){
-//        Booking booking = bookingRepository.findById(idbooking).orElseThrow(() -> new AppException(ErrorCode.BOOKING_NOTFOUND));
-//        booking.setStatus(BookingStatus.PENDING_PAYMENT.getStatus());
-//        return new ApiResponse()
-//                .builder()
-//                .result(booking)
-//                .build();
-//    }
-//
-//
-//    public ApiResponse returnAndPayCar(Integer idbooking){
-//        Booking booking = bookingRepository.findById(idbooking).orElseThrow(() -> new AppException(ErrorCode.BOOKING_NOTFOUND));
-//        User user = userRepository.findById(booking.getUserIduser()).orElseThrow(() -> new AppException(ErrorCode.USER_NOTFOUND));
-//        Car car = carRepository.findById(booking.getCarIdcar()).orElseThrow(() -> new AppException(ErrorCode.CAR_NOTFOUND));
-//        user.setWallet(user.getWallet() + car.getDeposite());
-//        user.setWallet(user.getWallet() - car.getBaseprice());
-//        booking.setStatus(BookingStatus.COMPLETE.getStatus());
-//        return new ApiResponse()
-//                .builder()
-//                .result(booking)
-//                .build();
-//    }
+    public ApiResponse getListCar(){
+        return new ApiResponse<>().builder()
+                .result(carRepository.findAll()).build();
+    }
 }

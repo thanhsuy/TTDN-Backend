@@ -17,9 +17,6 @@ public class ConfirmDepositController {
 
     @PostMapping("/confirmdeposit/{idbooking}")
     public ApiResponse confirmdeposit(@PathVariable("idbooking") Integer idbooking){
-        return ApiResponse
-                .builder()
-                .result(confirmDepositService.confirmDeposit(idbooking))
-                .build();
+        return confirmDepositService.confirmDeposit(idbooking);
     }
 }

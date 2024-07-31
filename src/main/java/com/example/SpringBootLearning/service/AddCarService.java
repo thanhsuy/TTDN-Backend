@@ -29,7 +29,7 @@ public class AddCarService {
     public ApiResponse addCar(AddCarRequest request)
     {
         Car car = carMapper.toCar(request);
-        car.setStatus("AVAILABLE");
+        car.setStatus("Available");
         var context = SecurityContextHolder.getContext();
         Jwt jwt = (Jwt) context.getAuthentication().getPrincipal();
         var claims = jwt.getClaims();
