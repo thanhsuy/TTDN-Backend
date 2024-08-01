@@ -19,7 +19,7 @@ public enum ErrorCode {
     NOTENOUGH_WALLET(1011, "Your wallet doesn’t have enough balance. Please top-up your wallet and try again", HttpStatus.BAD_REQUEST),
     STOP_CAR_FAIL(1012, "Hiện tại không thể Stop phương tiện này", HttpStatus.BAD_REQUEST),
     CAROWNER_CONFIRM(1013, "Chủ xe chưa xác nhận thanh toán!!", HttpStatus.BAD_REQUEST),
-    ;
+    INSUFFICIENT_BALANCE(1014, "", HttpStatus.BAD_REQUEST);
     ErrorCode(int code, String message, HttpStatusCode statusCode) {
         this.code = code;
         this.message = message;

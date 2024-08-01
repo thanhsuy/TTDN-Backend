@@ -22,8 +22,13 @@ public class ViewFeedbackReportController {
 //        return viewFeedbackReportService.viewFeedbackReport(request);
 //    }
 
+//    @GetMapping
+//    public List<FeedbackResponse> getFeedbackReport(@RequestParam int userId) {
+//        return viewFeedbackReportService.getFeedbackReport(userId);
+//    }
+
     @GetMapping
-    public List<FeedbackResponse> getFeedbackReport(@RequestParam int userId) {
-        return viewFeedbackReportService.getFeedbackReport(userId);
+    public List<FeedbackResponse> getFeedbackReport() {
+        return viewFeedbackReportService.getFeedbackReport();
     }
 }
