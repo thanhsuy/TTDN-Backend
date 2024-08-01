@@ -60,12 +60,23 @@ public class RentACarService {
         Booking booking = bookingRepository.findById(idbooking).orElseThrow(() -> new AppException(ErrorCode.BOOKING_NOTFOUND));
         User user = userRepository.findById(booking.getUserIduser()).orElseThrow(() -> new AppException(ErrorCode.USER_NOTFOUND));
         Car car = carRepository.findById(booking.getCarIdcar()).orElseThrow(() -> new AppException(ErrorCode.CAR_NOTFOUND));
+        User carowner = userRepository.findById(booking.getCarIdcarowner()).orElseThrow(() -> new AppException(ErrorCode.USER_NOTFOUND));
+
         System.out.println(user.getWallet());
-        if(booking.getPaymentmethod().equals(PayMentMethod.WALLET.getName()) && booking.getStatus().equals(BookingStatus.PENDING_DEPOSIT.getStatus())){
-            user.setWallet(user.getWallet() - car.getDeposite());
-            booking.setStatus(BookingStatus.PENDING_DEPOSIT.getStatus());
-            userRepository.save(user);
+        if(booking.getStatus().equals(BookingStatus.PENDING_DEPOSIT.getStatus()))
+        {
+            if(booking.getPaymentmethod().equals(PayMentMethod.WALLET.getName())){
+                user.setWallet(user.getWallet() - car.getDeposite());
+                booking.setStatus(BookingStatus.CONFIRMRED.getStatus());
+                carowner.setWallet(carowner.getWallet() + car.getDeposite());
+            } else {
+                booking.setStatus(BookingStatus.PENDING_DEPOSIT.getStatus());
+            }
         }
+
+        userRepository.save(user);
+        userRepository.save(carowner);
+        bookingRepository.save(booking);
         return new ApiResponse()
                 .builder()
                 .result(booking)
