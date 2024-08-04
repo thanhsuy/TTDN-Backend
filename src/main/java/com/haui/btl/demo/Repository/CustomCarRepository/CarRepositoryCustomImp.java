@@ -15,7 +15,7 @@ public class CarRepositoryCustomImp implements CarRepositoryCustom<Car> {
 
     @Override
     public List<Object[]> findTop5CitiesWithMostCars() {
-        String sql = "SELECT SUBSTRING_INDEX(c.address, ',', -1) AS city, COUNT(c.idcar) AS carCount " +
+        String sql = "SELECT SUBSTRING_INDEX(c.address, ',', -1) AS city, COUNT(c.idCar) AS carCount " +
                 "FROM Car c " +
                 "GROUP BY city " +
                 "ORDER BY carCount DESC " +

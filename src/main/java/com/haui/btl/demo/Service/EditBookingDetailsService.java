@@ -20,30 +20,36 @@ public class EditBookingDetailsService {
     @Autowired
     private UserRepository userRepository;
 
-    public ViewBookingListResponse updateBooking(Integer id, EditBookingDetailsRequest bookingRequest) {
-        Optional<Booking> existingBooking = bookingRepository.findById(id);
-        if (existingBooking.isPresent()) {
-            Booking booking = existingBooking.get();
+    public ViewBookingListResponse updateBooking(Integer id, String email, EditBookingDetailsRequest bookingRequest) {
+        Optional<User> userOptional = userRepository.findByEmail(email);
+        if (userOptional.isPresent() && "CUSTOMER".equals(userOptional.get().getRole())) {
+            int userId = userOptional.get().getIduser();
+            Optional<Booking> existingBooking = bookingRepository.findById(id);
+            if (existingBooking.isPresent()) {
+                Booking booking = existingBooking.get();
 
-            // Kiểm tra trạng thái đặt chỗ
-            if (isEditable(booking.getStatus())) {
-                booking.setBookingno(bookingRequest.getBookingno());
-                booking.setStartdatetime(bookingRequest.getStartdatetime());
-                booking.setEnddatetime(bookingRequest.getEnddatetime());
-                booking.setDriversinformation(bookingRequest.getDriversinformation());
-                booking.setPaymentmethod(bookingRequest.getPaymentmethod());
-                booking.setStatus(bookingRequest.getStatus());
-                booking.setCarIdcar(bookingRequest.getCarIdcar());
-                booking.setCarIdcarowner(bookingRequest.getCarIdcarowner());
-                booking.setUserIduser(bookingRequest.getUserIduser());
-                bookingRepository.save(booking);
-                return mapToBookingResponse(booking);
+                // Kiểm tra trạng thái đặt chỗ
+                if (isEditable(booking.getStatus())) {
+                    booking.setBookingno(bookingRequest.getBookingno());
+                    booking.setStartdatetime(bookingRequest.getStartdatetime());
+                    booking.setEnddatetime(bookingRequest.getEnddatetime());
+                    booking.setDriversinformation(bookingRequest.getDriversinformation());
+                    booking.setPaymentmethod(bookingRequest.getPaymentmethod());
+                    booking.setStatus(bookingRequest.getStatus());
+                    booking.setCarIdcar(bookingRequest.getCarIdcar());
+                    booking.setCarIdcarowner(bookingRequest.getCarIdcarowner());
+                    booking.setUserIduser(bookingRequest.getUserIduser());
+                    bookingRepository.save(booking);
+                    return mapToBookingResponse(booking);
+                } else {
+                    // Xử lý nếu không cho phép chỉnh sửa
+                    throw new IllegalArgumentException("Không thể chỉnh sửa đặt chỗ với trạng thái hiện tại: " + booking.getStatus());
+                }
             } else {
-                // Xử lý nếu không cho phép chỉnh sửa
-                throw new IllegalArgumentException("Không thể chỉnh sửa đặt chỗ với trạng thái hiện tại: " + booking.getStatus());
+                return null; // hoặc bạn có thể ném ra một ngoại lệ phù hợp
             }
         } else {
-            return null; // hoặc bạn có thể ném ra một ngoại lệ phù hợp
+            throw new IllegalArgumentException("User không có quyền truy cập.");
         }
     }
 
@@ -73,7 +79,6 @@ public class EditBookingDetailsService {
         response.setCarIdcar(booking.getCarIdcar());
         response.setCarIdcarowner(booking.getCarIdcarowner());
         response.setUserIduser(booking.getUserIduser());
-//        response.setPaymentInstruction(getPaymentInstruction(booking));
         return response;
     }
 

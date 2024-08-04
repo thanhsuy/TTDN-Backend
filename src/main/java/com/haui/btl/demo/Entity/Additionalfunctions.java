@@ -13,10 +13,10 @@ import lombok.*;
 @IdClass(AdditionalfunctionsId.class)
 public class Additionalfunctions {
     @Id
-    private int idCar;
+    private int idcar;
 
     @Id
-    private String nameTerms;
+    private String namefunctions;
 
     // Other fields, getters, setters, etc.
 }

@@ -4,8 +4,10 @@ import com.haui.btl.demo.Entity.Car;
 import com.haui.btl.demo.Repository.CustomCarRepository.CarRepositoryCustom;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -19,4 +21,13 @@ public interface CarRepository extends JpaRepository<Car, Integer>, CarRepositor
     List<Object[]> findTop5CitiesWithMostCars();
 
     List<Car> findAllByidcarowner(Long idCarOwner);
+
+    @Query("SELECT c FROM Car c WHERE c.status = 'Available' AND c.address LIKE %:address% " +
+            "AND c.idcar NOT IN (" +
+            "SELECT b.carIdcar FROM Booking b " +
+            "WHERE b.startdatetime < :endTime AND b.enddatetime > :startTime " +
+            "AND b.status <> 'Complete')")
+    List<Car> findAvailableCars(@Param("address") String address,
+                                @Param("startTime") LocalDateTime startTime,
+                                @Param("endTime") LocalDateTime endTime);
 }

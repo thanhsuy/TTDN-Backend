@@ -14,9 +14,9 @@ import lombok.experimental.FieldDefaults;
 public class Termofuse {
     @Id
     @Column(nullable = false)
-    int idCar;
+    int idcar;
 
     @Id
     @Column(nullable = false, length = 100)
-    String nameTerms;
+    String nameterms;
 }

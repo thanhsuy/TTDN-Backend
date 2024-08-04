@@ -44,7 +44,7 @@ public class ViewHomePageasCustomerService {
         List<Feedback> feedbackList = getTopFeedBack();
         List<FeedbackResponse> feedbackResponseList = new ArrayList<>();
         for (Feedback i : feedbackList){
-            User user = userRepository.findById(i.getBookingUserIduser()+"").orElse(null);
+            User user = userRepository.findById(i.getBookingUserIduser()).orElse(null);
             FeedbackResponse feedbackResponse = feedbackMapper.toFeedbackResponse(i);
             feedbackResponse.setUser(user);
             feedbackResponseList.add(feedbackResponse);

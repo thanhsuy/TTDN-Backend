@@ -7,6 +7,7 @@ import com.haui.btl.demo.Repository.BookingRepository;
 import com.haui.btl.demo.Repository.CarRepository;
 import com.haui.btl.demo.Repository.FeedbackRepository;
 import com.haui.btl.demo.dto.request.SearchCarRequest;
+import com.haui.btl.demo.dto.request.SearchCarRequestNew;
 import com.haui.btl.demo.dto.response.ApiResponse;
 import com.haui.btl.demo.dto.response.SearchCarResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,6 +59,21 @@ public class SearchCarService {
         List<Car> carListSearch = allCars.stream()
                                   .filter(car -> car.getAddress().contains(searchCarRequest.getAddress()) && "Available".equalsIgnoreCase(car.getStatus()))
                                   .toList();
+        List<SearchCarResponse> searchCarResponseList = new ArrayList<>();
+        for (Car i : carListSearch){
+            SearchCarResponse searchCarResponse = new SearchCarResponse();
+            searchCarResponse.setCar(i);
+            searchCarResponse.setRate(calculateAverageRateForCar(i.getIdcar()));
+            searchCarResponse.setBookingNumber(countBookingsForCar(i.getIdcar()));
+            searchCarResponseList.add(searchCarResponse);
+        }
+        apiResponse.setResult(searchCarResponseList);
+        return apiResponse;
+    }
+
+    public ApiResponse<List<SearchCarResponse>> findAvailableCars(SearchCarRequestNew searchCarRequestNew) {
+        List<Car> carListSearch = carRepository.findAvailableCars(searchCarRequestNew.getAddress(), searchCarRequestNew.getStartTime(), searchCarRequestNew.getEndTime());
+        ApiResponse<List<SearchCarResponse>> apiResponse = new ApiResponse<>();
         List<SearchCarResponse> searchCarResponseList = new ArrayList<>();
         for (Car i : carListSearch){
             SearchCarResponse searchCarResponse = new SearchCarResponse();

@@ -16,7 +16,7 @@ public class EditProfileController {
     private UserService userService;
 
     @PutMapping("/{id}")
-    public ApiResponse<User> updateUser(@PathVariable Long id, @RequestBody User user) {
+    public ApiResponse<User> updateUser(@PathVariable Integer id, @RequestBody User user) {
         ApiResponse<User> apiReponse = new ApiResponse<>();
         apiReponse.setResult(userService.updateProfile(id, user));
         return apiReponse;

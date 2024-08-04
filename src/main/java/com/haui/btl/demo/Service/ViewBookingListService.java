@@ -1,6 +1,7 @@
 package com.haui.btl.demo.Service;
 
 import com.haui.btl.demo.Entity.Booking;
+import com.haui.btl.demo.Entity.User;
 import com.haui.btl.demo.Repository.BookingRepository;
 import com.haui.btl.demo.Repository.UserRepository;
 import com.haui.btl.demo.dto.response.ViewBookingListResponse;
@@ -21,9 +22,14 @@ public class ViewBookingListService {
     private UserRepository userRepository;
 
     public List<ViewBookingListResponse> getBookingsForUser(String email) {
-        int userId = userRepository.findByEmail(email).get().getIduser();
-        List<Booking> bookings = bookingRepository.findByUserIduser(userId);
-        return bookings.stream().map(this::mapToBookingResponse).collect(Collectors.toList());
+        Optional<User> userOptional = userRepository.findByEmail(email);
+        if (userOptional.isPresent() && "CUSTOMER".equals(userOptional.get().getRole())) {
+            int userId = userOptional.get().getIduser();
+            List<Booking> bookings = bookingRepository.findByUserIduser(userId);
+            return bookings.stream().map(this::mapToBookingResponse).collect(Collectors.toList());
+        } else {
+            throw new IllegalArgumentException("User không có quyền truy cập.");
+        }
     }
 
     public ViewBookingListResponse getBookingById(Integer id) {
