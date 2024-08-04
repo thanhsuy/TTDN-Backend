@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 //package com.haui.btl.demo.Service;
 //
 //import com.haui.btl.demo.Entity.Feedback;
@@ -38,6 +39,8 @@
 //    }
 //}
 
+=======
+>>>>>>> 497055f259f8f688610eb3b0abc570258fc74230
 package com.haui.btl.demo.Service;
 
 import com.haui.btl.demo.Entity.Feedback;

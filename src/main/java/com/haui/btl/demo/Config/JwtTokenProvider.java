@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class JwtTokenProvider {
-
     @Value("${jwt.secret}")
     private String jwtSecret;
 
@@ -19,5 +18,5 @@ public class JwtTokenProvider {
         return claims.getSubject();
     }
 
-    // Các phương thức khác...
 }
+

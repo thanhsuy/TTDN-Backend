@@ -11,12 +11,15 @@ import com.haui.btl.demo.dto.request.ForgotPasswordRequest;
 import com.haui.btl.demo.dto.request.UserCreationRequest;
 import com.haui.btl.demo.dto.response.ApiResponse;
 import com.haui.btl.demo.dto.response.UserRespone;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -69,16 +72,6 @@ public class UserService {
         return apiReponse;
     }
 
-//    public ApiResponse updateUser(String userId, UserCreationRequest request) {
-//        User user = userRepository.findById(userId).orElseThrow(() -> new AppException(ErrorCode.USER_NOTFOUND));
-//        ApiResponse apiReponse = new ApiResponse();
-//        user = userMapper.updateUser(user,request);
-//        user.setPassword(passwordEncoder.encode(user.getPassword()));
-//        userRepository.save(user);
-//        apiReponse.setResult(userRepository.save(user));
-//        return apiReponse;
-//    }
-
     public ApiResponse updateUser(Integer userId, UserCreationRequest request) {
         User user = userRepository.findById(userId).orElseThrow(() -> new AppException(ErrorCode.USER_NOTFOUND));
         ApiResponse apiResponse = new ApiResponse();
@@ -97,12 +90,12 @@ public class UserService {
 
     public ApiResponse fotgotPassword(ForgotPasswordRequest request) {
         User user = userRepository.findByEmail(request.getEmail()).orElseThrow(() -> new AppException(ErrorCode.USER_NOTFOUND));
-        if(request.getNewpassword().equals(request.getConfirmpassword()) && request.getNewpassword().equals(request.getConfirmpassword()))
+        if(request.getNewpassword().equals(request.getConfirmpassword()))
         {
             user.setPassword(passwordEncoder.encode(request.getNewpassword()));
         }else throw new AppException(ErrorCode.PASSWORC_NOTEQUAL);
 
-        System.out.println(request.getNewpassword().equals(request.getConfirmpassword()) && request.getNewpassword().equals(request.getConfirmpassword()));
+        System.out.println(request.getNewpassword().equals(request.getConfirmpassword()));
         System.out.println(request.getNewpassword());
         System.out.println(request.getConfirmpassword());
 
@@ -128,16 +121,32 @@ public class UserService {
         return apiReponse;
     }
 
-    public User updateProfile(Long id, User updatedUser) {
-        User user = userRepository.findById(Math.toIntExact(id)).orElseThrow(() -> new AppException(ErrorCode.USER_NOTFOUND));
-        user.setName(updatedUser.getName());
-        user.setDateofbirth(updatedUser.getDateofbirth());
-        user.setEmail(updatedUser.getEmail());
-        user.setPhoneno(updatedUser.getPhoneno());
-        user.setNationalidno(updatedUser.getNationalidno());
-        user.setAddress(updatedUser.getAddress());
-        user.setDrivinglicense(updatedUser.getDrivinglicense());
-        user.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
-        return userRepository.save(user);
+
+    //Quang's source
+//    public User updateProfile(Long id, User updatedUser) {
+//        User user = userRepository.findById(Math.toIntExact(id)).orElseThrow(() -> new AppException(ErrorCode.USER_NOTFOUND));
+//        user.setName(updatedUser.getName());
+//        user.setDateofbirth(updatedUser.getDateofbirth());
+//        user.setEmail(updatedUser.getEmail());
+//        user.setPhoneno(updatedUser.getPhoneno());
+//        user.setNationalidno(updatedUser.getNationalidno());
+//        user.setAddress(updatedUser.getAddress());
+//        user.setDrivinglicense(updatedUser.getDrivinglicense());
+//        user.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
+//        return userRepository.save(user);
+//    }
+
+    public User updateProfile(Integer id, User updatedUser) {
+        Optional<User> optionalUser = userRepository.findById(id);
+
+        if (optionalUser.isPresent()) {
+            User existingUser = optionalUser.get();
+            updatedUser.setIduser(id);
+            updatedUser.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
+            return userRepository.save(updatedUser);
+        } else {
+            throw new AppException(ErrorCode.USER_NOTFOUND);
+        }
     }
+
 }

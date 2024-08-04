@@ -36,4 +36,6 @@ public class ViewWalletController {
     public ViewWalletResponse withdrawFromWallet(@RequestBody WithdrawRequest withdrawRequest) {
         return viewWalletService.withdrawFromWallet(withdrawRequest);
     }
+
 }
+
