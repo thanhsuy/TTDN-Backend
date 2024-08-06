@@ -1,8 +1,9 @@
 package com.example.SpringBootLearning.mapper;
 
+import org.mapstruct.Mapper;
+
 import com.example.SpringBootLearning.dto.request.AddCarRequest;
 import com.example.SpringBootLearning.entity.Car;
-import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
 public interface CarMapper {

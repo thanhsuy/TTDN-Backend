@@ -1,14 +1,14 @@
 package com.example.SpringBootLearning.controller;
 
-import com.example.SpringBootLearning.dto.request.ForgotPasswordRequest;
-import com.example.SpringBootLearning.dto.respone.UserRespone;
 import jakarta.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import com.example.SpringBootLearning.dto.respone.ApiResponse;
+import com.example.SpringBootLearning.dto.request.ForgotPasswordRequest;
 import com.example.SpringBootLearning.dto.request.UserCreationRequest;
+import com.example.SpringBootLearning.dto.respone.ApiResponse;
+import com.example.SpringBootLearning.dto.respone.UserRespone;
 import com.example.SpringBootLearning.service.UserService;
 
 @RestController
@@ -42,9 +42,9 @@ public class UserController {
         return userService.createUser(request);
     }
 
-
     @PutMapping("/{userId}/update")
-    public ApiResponse updateUser(@PathVariable("userId") Integer userId, @RequestBody @Valid UserCreationRequest request) {
+    public ApiResponse updateUser(
+            @PathVariable("userId") Integer userId, @RequestBody @Valid UserCreationRequest request) {
         return userService.updateUser(userId, request);
     }
 
@@ -52,7 +52,6 @@ public class UserController {
     public ApiResponse forgotPassword(@RequestBody @Valid ForgotPasswordRequest request) {
         return userService.fotgotPassword(request);
     }
-
 
     @DeleteMapping("/{userId}/delete")
     public ApiResponse deleteUser(@PathVariable("userId") Integer userId) {

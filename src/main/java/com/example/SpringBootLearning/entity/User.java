@@ -1,12 +1,10 @@
 package com.example.SpringBootLearning.entity;
 
 import java.time.LocalDate;
-import java.util.Set;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -17,16 +15,17 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Builder
 public class User {
-     @Id
-     int iduser;
-     String name;
-     LocalDate dateofbirth;
-     int nationalidno;
-     String phoneno;
-     String email;
-     String address;
-     String drivinglicense;
-     String password;
-     String role;
-     float wallet;
+    @Id
+    int iduser;
+
+    String name;
+    LocalDate dateofbirth;
+    int nationalidno;
+    String phoneno;
+    String email;
+    String address;
+    String drivinglicense;
+    String password;
+    String role;
+    float wallet;
 }

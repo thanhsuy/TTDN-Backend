@@ -1,13 +1,14 @@
 package com.example.SpringBootLearning.entity;
 
+import java.time.LocalDateTime;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-
-import java.time.LocalDateTime;
 
 @Entity
 @Data
@@ -19,6 +20,7 @@ public class Feedback {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer idfeedback;
+
     Integer rate;
     String content;
     LocalDateTime datetime;
@@ -30,5 +32,4 @@ public class Feedback {
     int bookingCarIdcarowner;
 
     int bookingUserIduser;
-
 }

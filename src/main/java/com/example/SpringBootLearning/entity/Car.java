@@ -1,6 +1,7 @@
 package com.example.SpringBootLearning.entity;
 
 import jakarta.persistence.*;
+
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -59,5 +60,4 @@ public class Car {
 
     @Column(nullable = false)
     int idcarowner;
-
 }

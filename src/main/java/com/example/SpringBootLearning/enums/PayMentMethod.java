@@ -16,5 +16,4 @@ public enum PayMentMethod {
     BANK_TRANSFER("Bank transfer"),
     ;
     private String name;
-
 }

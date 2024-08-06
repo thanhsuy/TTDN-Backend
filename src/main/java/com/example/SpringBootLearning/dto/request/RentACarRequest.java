@@ -1,11 +1,9 @@
 package com.example.SpringBootLearning.dto.request;
 
+import java.time.LocalDate;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
