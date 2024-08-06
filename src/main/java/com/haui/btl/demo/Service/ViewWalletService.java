@@ -73,6 +73,25 @@ public class ViewWalletService {
                 .build();
     }
 
+    public ViewWalletResponse searchTransactions(LocalDateTime startDate, LocalDateTime endDate) {
+        var authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication.getName();
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOTFOUND));
+
+        List<Transactions> transactionsList = transactionsRepository.findByUserIduserAndDatetimeBetween(user.getIduser(), startDate, endDate);
+
+        List<TransactionResponse> transactionResponses = transactionsList.stream()
+                .map(this::mapToTransactionResponse)
+                .collect(Collectors.toList());
+
+        return ViewWalletResponse.builder()
+                .userId(user.getIduser())
+                .walletBalance(user.getWallet())
+                .transactions(transactionResponses)
+                .build();
+    }
+
     public ViewWalletResponse topUpWallet(TopUpRequest topUpRequest) {
         User user = getCurrentUser();
         user.setWallet(user.getWallet() + topUpRequest.getAmount());

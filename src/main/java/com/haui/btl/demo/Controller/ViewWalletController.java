@@ -8,6 +8,8 @@ import com.haui.btl.demo.dto.response.ViewWalletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+
 @RestController
 @RequestMapping("/viewWallet")
 public class ViewWalletController {
@@ -35,6 +37,13 @@ public class ViewWalletController {
     @PostMapping("/withdraw")
     public ViewWalletResponse withdrawFromWallet(@RequestBody WithdrawRequest withdrawRequest) {
         return viewWalletService.withdrawFromWallet(withdrawRequest);
+    }
+
+    @GetMapping("/search")
+    public ViewWalletResponse searchTransactions(@RequestParam String startDate, @RequestParam String endDate) {
+        LocalDateTime start = LocalDateTime.parse(startDate);
+        LocalDateTime end = LocalDateTime.parse(endDate);
+        return viewWalletService.searchTransactions(start, end);
     }
 
 }

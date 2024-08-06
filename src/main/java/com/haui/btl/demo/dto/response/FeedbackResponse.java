@@ -18,12 +18,14 @@ public class FeedbackResponse {
     LocalDateTime datetime;
 
     int bookingIdbooking;
-
     int bookingCarIdcar;
-
     int bookingCarIdcarowner;
-
     int bookingUserIduser;
 
     User user;
+
+    String carName;
+    String carModel;
+    String bookingStartDate;
+    String bookingEndDate;
 }
