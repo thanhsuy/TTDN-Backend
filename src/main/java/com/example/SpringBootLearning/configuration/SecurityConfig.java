@@ -32,7 +32,9 @@ public class SecurityConfig {
         "/getcar/**",
         "/getbooking/**",
         "/getlistcar",
-        "/getlistcarbyidcarowner"
+        "/getlistcarbyidcarowner",
+        "/create_payment",
+        "/returnurl"
     };
     private String SERCRET_KEY = "0aPglnnROU/zGjIuvAA32LpDzmqEY2O7J4fgQ4Eh+4KuJaSCXQIFQgBv6a69Pvkt";
 
@@ -40,11 +42,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 .csrf(AbstractHttpConfigurer::disable) // Tắt CSRF (tuỳ chọn)
-                .authorizeHttpRequests((requests) -> requests.requestMatchers(HttpMethod.POST, PUBLIC_ENDPOINT)
-                        .permitAll()
-                        .requestMatchers(HttpMethod.GET, PUBLIC_ENDPOINT)
-                        .permitAll()
-                        .requestMatchers(HttpMethod.PUT, PUBLIC_ENDPOINT)
+                .authorizeHttpRequests((requests) -> requests.requestMatchers(PUBLIC_ENDPOINT)
                         .permitAll()
                         .anyRequest()
                         .authenticated());

@@ -10,6 +10,8 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
+import java.io.UnsupportedEncodingException;
+
 @RestController
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @RequiredArgsConstructor
@@ -22,7 +24,7 @@ public class RentACarController {
     }
 
     @PostMapping("/paidDeposid/{idbooking}")
-    public ApiResponse paidDeposid(@PathVariable("idbooking") Integer idbooking) {
+    public ApiResponse paidDeposid(@PathVariable("idbooking") Integer idbooking) throws UnsupportedEncodingException {
         return rentACarService.paidDeposid(idbooking);
     }
 

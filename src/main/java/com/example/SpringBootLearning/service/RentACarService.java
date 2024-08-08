@@ -23,6 +23,9 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.web.servlet.view.RedirectView;
+
+import java.io.UnsupportedEncodingException;
 
 @Service
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -33,6 +36,7 @@ public class RentACarService {
     BookingRepository bookingRepository;
     BookingMapper bookingMapper;
     UserRepository userRepository;
+    VNPAYService vnpayService;
 
     @PreAuthorize("hasRole('CUSTOMER')")
     public ApiResponse makeABooking(RentACarRequest request, int carIdcar) {
@@ -49,11 +53,16 @@ public class RentACarService {
             booking.setUserIduser(idUser);
             booking.setStatus(BookingStatus.PENDING_DEPOSIT.getStatus());
             bookingRepository.save(booking);
+
         } else throw new AppException(ErrorCode.CAR_NOT_AVAILABLE);
-        return new ApiResponse().builder().result(booking).build();
+
+        return new ApiResponse()
+                .builder()
+                .result(booking)
+                .build();
     }
 
-    public ApiResponse paidDeposid(Integer idbooking) {
+    public ApiResponse paidDeposid(Integer idbooking) throws UnsupportedEncodingException {
         Booking booking =
                 bookingRepository.findById(idbooking).orElseThrow(() -> new AppException(ErrorCode.BOOKING_NOTFOUND));
         User user = userRepository
@@ -66,16 +75,15 @@ public class RentACarService {
                 .findById(booking.getCarIdcarowner())
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOTFOUND));
 
-        System.out.println(user.getWallet());
         if (booking.getStatus().equals(BookingStatus.PENDING_DEPOSIT.getStatus())) {
             if (booking.getPaymentmethod().equals(PayMentMethod.WALLET.getName())) {
                 user.setWallet(user.getWallet() - car.getDeposite());
                 booking.setStatus(BookingStatus.CONFIRMRED.getStatus());
                 car.setStatus("Booked");
                 carowner.setWallet(carowner.getWallet() + car.getDeposite());
-            } else {
-                booking.setStatus(BookingStatus.PENDING_DEPOSIT.getStatus());
             }
+        }else{
+            booking.setStatus(BookingStatus.PENDING_DEPOSIT.getStatus());
         }
 
         userRepository.save(user);
