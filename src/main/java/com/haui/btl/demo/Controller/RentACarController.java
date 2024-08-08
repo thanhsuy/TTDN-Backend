@@ -18,25 +18,22 @@ public class RentACarController {
     RentACarService rentACarService;
 
     @PostMapping("/makeABooking/{carIdcar}")
-    public ApiResponse makeABooking(@RequestBody RentACarRequest request, @PathVariable("carIdcar") int carIdcar){
-        return ApiResponse
-                .builder()
-                .result(rentACarService.makeABooking(request,carIdcar))
-                .build();
+    public ApiResponse makeABooking(@RequestBody RentACarRequest request, @PathVariable("carIdcar") int carIdcar) {
+        return rentACarService.makeABooking(request, carIdcar);
     }
+
     @PostMapping("/paidDeposid/{idbooking}")
-    public ApiResponse paidDeposid(@PathVariable("idbooking") Integer idbooking){
-        return ApiResponse
-                .builder()
-                .result(rentACarService.paidDeposid(idbooking))
-                .build();
+    public ApiResponse paidDeposid(@PathVariable("idbooking") Integer idbooking) {
+        return rentACarService.paidDeposid(idbooking);
     }
 
     @GetMapping("/getcar/{carIdcar}")
-    public ApiResponse getCarById(@PathVariable("carIdcar") Integer carIdcar){
-        return ApiResponse
-                .builder()
-                .result(rentACarService.getCarById(carIdcar))
-                .build();
+    public ApiResponse getCarById(@PathVariable("carIdcar") Integer carIdcar) {
+        return rentACarService.getCarById(carIdcar);
+    }
+
+    @GetMapping("/getlistcar")
+    public ApiResponse getListCar() {
+        return rentACarService.getListCar();
     }
 }

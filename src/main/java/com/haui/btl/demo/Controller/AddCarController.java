@@ -1,6 +1,8 @@
 package com.haui.btl.demo.Controller;
 
 
+import com.haui.btl.demo.Entity.Additionalfunctions;
+import com.haui.btl.demo.Entity.Termofuse;
 import com.haui.btl.demo.Service.AddCarService;
 import com.haui.btl.demo.dto.request.AddCarRequest;
 import com.haui.btl.demo.dto.response.ApiResponse;
@@ -26,4 +28,9 @@ public class AddCarController {
         return addCarService.addCar(request);
     }
 
+    @PostMapping("/addterm")
+    public ApiResponse addTermofuse(@RequestBody Termofuse termofuse){return addCarService.addTerm(termofuse);}
+
+    @PostMapping("/addfunction")
+    public ApiResponse addFunction(@RequestBody Additionalfunctions additionalfunctions){return addCarService.addFunctions(additionalfunctions);}
 }
