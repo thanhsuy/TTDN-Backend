@@ -44,7 +44,8 @@ public class RentACarService {
         booking.setCarIdcar(carIdcar);
         Car car = carRepository.findById(carIdcar).orElseThrow(() -> new AppException(ErrorCode.CAR_NOTFOUND));
         int idCarOwner = car.getIdcarowner();
-        if (car.getStatus().equals("Available")) {
+
+        if (carRepository.checkCarAvailable(request.getStartdatetime(), request.getEnddatetime(), carIdcar) == 1) {
             booking.setCarIdcarowner(idCarOwner);
             Jwt jwt =
                     (Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal();

@@ -20,6 +20,8 @@ import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
+import java.time.temporal.ChronoUnit;
+
 @Service
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @RequiredArgsConstructor
@@ -45,7 +47,8 @@ public class ReturnCarService {
                 .orElseThrow(() -> new AppException(ErrorCode.CAR_NOTFOUND));
         if (booking.getStatus().equals(BookingStatus.IN_PROGRESS.getStatus())
                 || booking.getStatus().equals(BookingStatus.PENDING_PAYMENT.getStatus())) {
-            float remaining = car.getBaseprice() - car.getDeposite();
+            int dayBetween = (int) ChronoUnit.DAYS.between(booking.getStartdatetime(), booking.getEnddatetime());
+            float remaining = car.getBaseprice() * dayBetween - car.getDeposite();
             if (user.getWallet() < remaining) {
                 booking.setStatus(BookingStatus.PENDING_PAYMENT.getStatus());
                 bookingRepository.save(booking);
