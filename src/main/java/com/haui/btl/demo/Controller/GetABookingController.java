@@ -28,4 +28,14 @@ public class GetABookingController {
                 .result(getABookingService.getABooking(idbooking))
                 .build();
     }
+
+    @GetMapping("/carowner")
+    public ApiResponse getListBooking() {
+        return getABookingService.getListBooking();
+    }
+
+    @GetMapping("/user")
+    public ApiResponse getListBookingUser() {
+        return getABookingService.getListBookingUser();
+    }
 }
