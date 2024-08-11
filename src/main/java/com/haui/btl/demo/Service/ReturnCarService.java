@@ -17,6 +17,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
+import java.time.temporal.ChronoUnit;
+
 @Service
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @RequiredArgsConstructor
@@ -35,30 +37,63 @@ public class ReturnCarService {
     @Autowired
     UserRepository userRepository;
 
-    @PreAuthorize("hasRole('CUSTOMER')")
-    public ApiResponse returnCar(Integer idbooking){
-        Booking booking = bookingRepository.findById(idbooking).orElseThrow(() -> new AppException(ErrorCode.BOOKING_NOTFOUND));
-        User user = userRepository.findById(booking.getUserIduser()).orElseThrow(() -> new AppException(ErrorCode.USER_NOTFOUND));
-        User carOwner = userRepository.findById(booking.getCarIdcarowner()).orElseThrow(() -> new AppException(ErrorCode.USER_NOTFOUND));
-        Car car = carRepository.findById(booking.getCarIdcar()).orElseThrow(() -> new AppException(ErrorCode.CAR_NOTFOUND));
-        if(booking.getStatus().equals(BookingStatus.IN_PROGRESS.getStatus()))
-        {
-            float remaining = car.getBaseprice() - car.getDeposite();
-            if (user.getWallet() < remaining){
-                booking.setStatus(BookingStatus.PENDING_PAYMENT.getStatus());
-                bookingRepository.save(booking);
-                throw new AppException(ErrorCode.NOTENOUGH_WALLET);
-            }
-            booking.setStatus(BookingStatus.COMPLETE.getStatus());
-            user.setWallet(user.getWallet() - remaining);
-            carOwner.setWallet(carOwner.getWallet() + remaining);
-            userRepository.save(user);
-            userRepository.save(carOwner);
+//    @PreAuthorize("hasRole('CUSTOMER')")
+//    public ApiResponse returnCar(Integer idbooking){
+//        Booking booking = bookingRepository.findById(idbooking).orElseThrow(() -> new AppException(ErrorCode.BOOKING_NOTFOUND));
+//        User user = userRepository.findById(booking.getUserIduser()).orElseThrow(() -> new AppException(ErrorCode.USER_NOTFOUND));
+//        User carOwner = userRepository.findById(booking.getCarIdcarowner()).orElseThrow(() -> new AppException(ErrorCode.USER_NOTFOUND));
+//        Car car = carRepository.findById(booking.getCarIdcar()).orElseThrow(() -> new AppException(ErrorCode.CAR_NOTFOUND));
+//        if(booking.getStatus().equals(BookingStatus.IN_PROGRESS.getStatus()))
+//        {
+//            float remaining = car.getBaseprice() - car.getDeposite();
+//            if (user.getWallet() < remaining){
+//                booking.setStatus(BookingStatus.PENDING_PAYMENT.getStatus());
+//                bookingRepository.save(booking);
+//                throw new AppException(ErrorCode.NOTENOUGH_WALLET);
+//            }
+//            booking.setStatus(BookingStatus.COMPLETE.getStatus());
+//            user.setWallet(user.getWallet() - remaining);
+//            carOwner.setWallet(carOwner.getWallet() + remaining);
+//            userRepository.save(user);
+//            userRepository.save(carOwner);
+//            bookingRepository.save(booking);
+//        }
+//        return new ApiResponse()
+//                .builder()
+//                .result(booking)
+//                .build();
+//    }
+@PreAuthorize("hasRole('CUSTOMER')")
+public ApiResponse returnCar(Integer idbooking) {
+    Booking booking =
+            bookingRepository.findById(idbooking).orElseThrow(() -> new AppException(ErrorCode.BOOKING_NOTFOUND));
+    User user = userRepository
+            .findById(booking.getUserIduser())
+            .orElseThrow(() -> new AppException(ErrorCode.USER_NOTFOUND));
+    User carOwner = userRepository
+            .findById(booking.getCarIdcarowner())
+            .orElseThrow(() -> new AppException(ErrorCode.USER_NOTFOUND));
+    Car car = carRepository
+            .findById(booking.getCarIdcar())
+            .orElseThrow(() -> new AppException(ErrorCode.CAR_NOTFOUND));
+    if (booking.getStatus().equals(BookingStatus.IN_PROGRESS.getStatus())
+            || booking.getStatus().equals(BookingStatus.PENDING_PAYMENT.getStatus())) {
+        int dayBetween = (int) ChronoUnit.DAYS.between(booking.getStartdatetime(), booking.getEnddatetime());
+        float remaining = car.getBaseprice() * dayBetween - car.getDeposite();
+        if (user.getWallet() < remaining) {
+            booking.setStatus(BookingStatus.PENDING_PAYMENT.getStatus());
             bookingRepository.save(booking);
+            throw new AppException(ErrorCode.NOTENOUGH_WALLET);
         }
-        return new ApiResponse()
-                .builder()
-                .result(booking)
-                .build();
+        booking.setStatus(BookingStatus.COMPLETE.getStatus());
+        user.setWallet(user.getWallet() - remaining);
+        carOwner.setWallet(carOwner.getWallet() + remaining);
+        car.setStatus("Available");
+        carRepository.save(car);
+        userRepository.save(user);
+        userRepository.save(carOwner);
+        bookingRepository.save(booking);
     }
+    return new ApiResponse().builder().result(booking).build();
+}
 }

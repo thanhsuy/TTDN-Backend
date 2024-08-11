@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -22,12 +23,32 @@ public interface CarRepository extends JpaRepository<Car, Integer>, CarRepositor
 
     List<Car> findAllByidcarowner(Long idCarOwner);
 
-    @Query("SELECT c FROM Car c WHERE c.status = 'Available' AND c.address LIKE %:address% " +
-            "AND c.idcar NOT IN (" +
+//    @Query("SELECT c FROM Car c WHERE c.status = 'Available' AND c.address LIKE %:address% " +
+//            "AND c.idcar NOT IN (" +
+//            "SELECT b.carIdcar FROM Booking b " +
+//            "WHERE b.startdatetime < :endTime AND b.enddatetime > :startTime " +
+//            "AND b.status <> 'Complete')")
+//    List<Car> findAvailableCars(@Param("address") String address,
+//                                @Param("startTime") LocalDateTime startTime,
+//                                @Param("endTime") LocalDateTime endTime);
+
+    @Query("SELECT c FROM Car c WHERE (c.status = 'Available' OR c.idcar NOT IN (" +
             "SELECT b.carIdcar FROM Booking b " +
             "WHERE b.startdatetime < :endTime AND b.enddatetime > :startTime " +
-            "AND b.status <> 'Complete')")
+            "AND b.status <> 'Complete')) " +
+            "AND c.address LIKE %:address%")
     List<Car> findAvailableCars(@Param("address") String address,
                                 @Param("startTime") LocalDateTime startTime,
                                 @Param("endTime") LocalDateTime endTime);
+
+    @Query(value = "SELECT EXISTS (" +
+            "SELECT 1 FROM car WHERE status = 'Available' AND idCar = :idCar AND idCar NOT IN (" +
+            "SELECT Car_idCar FROM booking " +
+            "WHERE startDateTime < :endTime AND endDateTime > :startTime " +
+            "AND status <> 'Complete'))",
+            nativeQuery = true)
+    Long checkCarAvailable(@Param("startTime") LocalDate startTime,
+                           @Param("endTime") LocalDate endTime,
+                           @Param("idCar") int idCar);
+
 }

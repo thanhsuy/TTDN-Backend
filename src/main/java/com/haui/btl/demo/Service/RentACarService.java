@@ -24,6 +24,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 
+import java.io.UnsupportedEncodingException;
+
 @Service
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @RequiredArgsConstructor
@@ -53,7 +55,7 @@ public class RentACarService {
         booking.setCarIdcar(carIdcar);
         Car car = carRepository.findById(carIdcar).orElseThrow(() -> new AppException(ErrorCode.CAR_NOTFOUND));
         int idCarOwner = car.getIdcarowner();
-        if(car.getStatus().equals("Available"))
+        if(carRepository.checkCarAvailable(request.getStartdatetime(), request.getEnddatetime(), carIdcar) == 1)
         {
             booking.setCarIdcarowner(idCarOwner);
 //            Jwt jwt = (Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -76,31 +78,58 @@ public class RentACarService {
                 .build();
     }
 
-    public ApiResponse paidDeposid(Integer idbooking){
-        Booking booking = bookingRepository.findById(idbooking).orElseThrow(() -> new AppException(ErrorCode.BOOKING_NOTFOUND));
-        User user = userRepository.findById(booking.getUserIduser()).orElseThrow(() -> new AppException(ErrorCode.USER_NOTFOUND));
-        Car car = carRepository.findById(booking.getCarIdcar()).orElseThrow(() -> new AppException(ErrorCode.CAR_NOTFOUND));
-        User carowner = userRepository.findById(booking.getCarIdcarowner()).orElseThrow(() -> new AppException(ErrorCode.USER_NOTFOUND));
+    public ApiResponse paidDeposid(Integer idbooking) throws UnsupportedEncodingException {
+//        Booking booking = bookingRepository.findById(idbooking).orElseThrow(() -> new AppException(ErrorCode.BOOKING_NOTFOUND));
+//        User user = userRepository.findById(booking.getUserIduser()).orElseThrow(() -> new AppException(ErrorCode.USER_NOTFOUND));
+//        Car car = carRepository.findById(booking.getCarIdcar()).orElseThrow(() -> new AppException(ErrorCode.CAR_NOTFOUND));
+//        User carowner = userRepository.findById(booking.getCarIdcarowner()).orElseThrow(() -> new AppException(ErrorCode.USER_NOTFOUND));
+//
+//        System.out.println(user.getWallet());
+//        if(booking.getStatus().equals(BookingStatus.PENDING_DEPOSIT.getStatus()))
+//        {
+//            if(booking.getPaymentmethod().equals(PayMentMethod.WALLET.getName())){
+//                user.setWallet(user.getWallet() - car.getDeposite());
+//                booking.setStatus(BookingStatus.CONFIRMRED.getStatus());
+//                carowner.setWallet(carowner.getWallet() + car.getDeposite());
+//            } else {
+//                booking.setStatus(BookingStatus.PENDING_DEPOSIT.getStatus());
+//            }
+//        }
+//
+//        userRepository.save(user);
+//        userRepository.save(carowner);
+//        bookingRepository.save(booking);
+//        return new ApiResponse()
+//                .builder()
+//                .result(booking)
+//                .build();
+        Booking booking =
+                bookingRepository.findById(idbooking).orElseThrow(() -> new AppException(ErrorCode.BOOKING_NOTFOUND));
+        User user = userRepository
+                .findById(booking.getUserIduser())
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOTFOUND));
+        Car car = carRepository
+                .findById(booking.getCarIdcar())
+                .orElseThrow(() -> new AppException(ErrorCode.CAR_NOTFOUND));
+        User carowner = userRepository
+                .findById(booking.getCarIdcarowner())
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOTFOUND));
 
-        System.out.println(user.getWallet());
-        if(booking.getStatus().equals(BookingStatus.PENDING_DEPOSIT.getStatus()))
-        {
-            if(booking.getPaymentmethod().equals(PayMentMethod.WALLET.getName())){
+        if (booking.getStatus().equals(BookingStatus.PENDING_DEPOSIT.getStatus())) {
+            if (booking.getPaymentmethod().equals(PayMentMethod.WALLET.getName())) {
                 user.setWallet(user.getWallet() - car.getDeposite());
                 booking.setStatus(BookingStatus.CONFIRMRED.getStatus());
+                car.setStatus("Booked");
                 carowner.setWallet(carowner.getWallet() + car.getDeposite());
-            } else {
-                booking.setStatus(BookingStatus.PENDING_DEPOSIT.getStatus());
             }
+        }else{
+            booking.setStatus(BookingStatus.PENDING_DEPOSIT.getStatus());
         }
 
         userRepository.save(user);
         userRepository.save(carowner);
         bookingRepository.save(booking);
-        return new ApiResponse()
-                .builder()
-                .result(booking)
-                .build();
+        return new ApiResponse().builder().result(booking).build();
     }
 
     public ApiResponse getCarById(Integer carIdcar){

@@ -15,7 +15,7 @@ public enum BookingStatus {
     IN_PROGRESS("In - Progress"),
     COMPLETE("Completed"),
     PENDING_PAYMENT("Pending Payment"),
-    CONFIRMRED("ConFirmed"),
+    CONFIRMRED("Confirmed"),
     PENDING_DEPOSIT("Pending Deposit"),
     ;
     private String status;
