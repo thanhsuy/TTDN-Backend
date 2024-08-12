@@ -6,4 +6,3 @@ import lombok.Data;
 public class ViewFeedbackReportRequest {
     private int userId;
 }
-

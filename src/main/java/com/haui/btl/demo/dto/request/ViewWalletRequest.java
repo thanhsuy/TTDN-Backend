@@ -6,4 +6,3 @@ import lombok.Data;
 public class ViewWalletRequest {
     private int userId;
 }
-

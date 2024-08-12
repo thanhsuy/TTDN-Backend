@@ -30,7 +30,7 @@ public class SecurityConfig {
                     "/auth/introspect",
                     "/user/forgot",
                     "/cars/**" // Thêm endpoint này vào danh sách công khai
-            };
+    };
     private String SERCRET_KEY = "0aPglnnROU/zGjIuvAA32LpDzmqEY2O7J4fgQ4Eh+4KuJaSCXQIFQgBv6a69Pvkt";
 
     @Bean
@@ -54,7 +54,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    JwtAuthenticationConverter jwtAuthenticationConverter(){
+    JwtAuthenticationConverter jwtAuthenticationConverter() {
         JwtGrantedAuthoritiesConverter jwtGrantedAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
         jwtGrantedAuthoritiesConverter.setAuthorityPrefix("ROLE_");
         JwtAuthenticationConverter jwtAuthenticationConverter = new JwtAuthenticationConverter();
@@ -63,12 +63,12 @@ public class SecurityConfig {
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
     @Bean
-    JwtDecoder jwtDecoder(){
+    JwtDecoder jwtDecoder() {
         SecretKeySpec secretKeySpec = new SecretKeySpec(SERCRET_KEY.getBytes(), "HS512");
         NimbusJwtDecoder nimbusJwtDecoder = NimbusJwtDecoder
                 .withSecretKey(secretKeySpec)

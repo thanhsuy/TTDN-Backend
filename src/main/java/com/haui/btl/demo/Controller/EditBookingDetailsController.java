@@ -19,6 +19,7 @@ public class EditBookingDetailsController {
     public ViewBookingListResponse updateBooking(@PathVariable Integer id, @RequestBody EditBookingDetailsRequest bookingRequest) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getName();
+
         return editBookingDetailsService.updateBooking(id, email, bookingRequest);
     }
 }

@@ -143,4 +143,3 @@ public class ViewWalletService {
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOTFOUND));
     }
 }
-

@@ -1,5 +1,6 @@
 package com.haui.btl.demo.Controller;
 
+
 import com.haui.btl.demo.Entity.User;
 import com.haui.btl.demo.Exception.AppException;
 import com.haui.btl.demo.Exception.ErrorCode;
@@ -22,23 +23,6 @@ public class ViewFeedbackReportController {
 
     @Autowired
     private UserRepository userRepository;
-
-//    @GetMapping("/{userId}")
-//    public List<FeedbackResponse> viewFeedbackReport(@PathVariable int userId) {
-//        ViewFeedbackReportRequest request = new ViewFeedbackReportRequest();
-//        request.setUserId(userId);
-//        return viewFeedbackReportService.viewFeedbackReport(request);
-//    }
-
-//    @GetMapping
-//    public List<FeedbackResponse> getFeedbackReport(@RequestParam int userId) {
-//        return viewFeedbackReportService.getFeedbackReport(userId);
-//    }
-
-//    @GetMapping
-//    public List<FeedbackResponse> getFeedbackReport() {
-//        return viewFeedbackReportService.getFeedbackReport();
-//    }
 
     @GetMapping
     public List<FeedbackResponse> getFeedbackReport(@RequestParam(required = false) Integer rate) {

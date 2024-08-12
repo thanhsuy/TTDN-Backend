@@ -23,18 +23,6 @@ public interface CarRepository extends JpaRepository<Car, Integer>, CarRepositor
 
     List<Car> findAllByidcarowner(Long idCarOwner);
 
-//    @Query("SELECT c FROM Car c WHERE c.address LIKE %:address% " +
-//        "AND (" +
-//        "   c.status = 'Available' " +
-//        "   OR c.idcar NOT IN (" +
-//        "       SELECT b.carIdcar FROM Booking b " +
-//        "       WHERE b.startdatetime < :endTime AND b.enddatetime > :startTime " +
-//        "       AND b.status <> 'Complete'" +
-//        "   )" +
-//        ")")
-//    List<Car> findAvailableCars(@Param("address") String address,
-//                                @Param("startTime") LocalDateTime startTime,
-//                                @Param("endTime") LocalDateTime endTime);
 
     @Query("SELECT c FROM Car c WHERE (c.status = 'Available' OR c.idcar NOT IN (" +
             "SELECT b.carIdcar FROM Booking b " +

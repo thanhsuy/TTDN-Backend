@@ -8,6 +8,7 @@ import com.haui.btl.demo.dto.response.ViewWalletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+
 import java.time.LocalDateTime;
 
 @RestController
@@ -38,6 +39,7 @@ public class ViewWalletController {
     public ViewWalletResponse withdrawFromWallet(@RequestBody WithdrawRequest withdrawRequest) {
         return viewWalletService.withdrawFromWallet(withdrawRequest);
     }
+<<<<<<< HEAD
 
     @GetMapping("/search")
     public ViewWalletResponse searchTransactions(@RequestParam String startDate, @RequestParam String endDate) {
@@ -48,3 +50,6 @@ public class ViewWalletController {
 
 }
 
+=======
+}
+>>>>>>> 1d77c79575cda7ddde9647c31be2219cc6a7e647
