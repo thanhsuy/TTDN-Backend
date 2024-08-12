@@ -1,0 +1,29 @@
+package com.haui.btl.demo.dto.response;
+
+import com.haui.btl.demo.Entity.User;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
+
+import java.time.LocalDateTime;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
+@Builder
+public class FeedbackResponse {
+    Integer idfeedback;
+    Integer rate;
+    String content;
+    LocalDateTime datetime;
+
+    int bookingIdbooking;
+
+    int bookingCarIdcar;
+
+    int bookingCarIdcarowner;
+
+    int bookingUserIduser;
+
+    User user;
+}
