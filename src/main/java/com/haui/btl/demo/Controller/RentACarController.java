@@ -9,6 +9,8 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.UnsupportedEncodingException;
+
 @RestController
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @RequiredArgsConstructor
@@ -23,7 +25,7 @@ public class RentACarController {
     }
 
     @PostMapping("/paidDeposid/{idbooking}")
-    public ApiResponse paidDeposid(@PathVariable("idbooking") Integer idbooking) {
+    public ApiResponse paidDeposid(@PathVariable("idbooking") Integer idbooking) throws UnsupportedEncodingException {
         return rentACarService.paidDeposid(idbooking);
     }
 

@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -18,4 +19,12 @@ public interface BookingRepository extends JpaRepository<Booking, Integer> {
 
     @Query(value = "select * from booking where User_idUser = :iduser", nativeQuery = true)
     public List<Booking> findBookingByIdUser(@Param("iduser") Integer iduser);
+
+    @Query("SELECT b FROM Booking b WHERE b.carIdcar = :idCar AND " +
+            "(b.startdatetime < :endTime AND b.enddatetime > :startTime) " +
+            "AND b.status <> 'Cancelled'")
+    List<Booking> findBookingsForCar(@Param("idCar") int idCar,
+                                     @Param("startTime") LocalDateTime startTime,
+                                     @Param("endTime") LocalDateTime endTime);
+
 }
