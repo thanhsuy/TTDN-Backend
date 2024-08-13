@@ -39,7 +39,6 @@ public class ViewWalletController {
     public ViewWalletResponse withdrawFromWallet(@RequestBody WithdrawRequest withdrawRequest) {
         return viewWalletService.withdrawFromWallet(withdrawRequest);
     }
-<<<<<<< HEAD
 
     @GetMapping("/search")
     public ViewWalletResponse searchTransactions(@RequestParam String startDate, @RequestParam String endDate) {
@@ -50,6 +49,3 @@ public class ViewWalletController {
 
 }
 
-=======
-}
->>>>>>> 1d77c79575cda7ddde9647c31be2219cc6a7e647

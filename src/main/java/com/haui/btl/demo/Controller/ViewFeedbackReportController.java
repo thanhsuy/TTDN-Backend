@@ -9,6 +9,7 @@ import com.haui.btl.demo.Service.ViewFeedbackReportService;
 import com.haui.btl.demo.dto.request.ViewFeedbackReportRequest;
 import com.haui.btl.demo.dto.response.FeedbackResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,6 +42,12 @@ public class ViewFeedbackReportController {
         }
 
         return viewFeedbackReportService.getAverageRating(user.getIduser());
+    }
+
+    @GetMapping("/cars/{idcar}/averageRatingByIdCar")
+    public ResponseEntity<Double> getAverageRating(@PathVariable Integer idcar) {
+        double averageRating = viewFeedbackReportService.getAverageRatingByIdCar(idcar);
+        return ResponseEntity.ok(averageRating);
     }
 
 }

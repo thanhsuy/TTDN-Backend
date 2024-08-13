@@ -5,11 +5,8 @@ import com.haui.btl.demo.Entity.User;
 import com.haui.btl.demo.Exception.AppException;
 import com.haui.btl.demo.Exception.ErrorCode;
 import com.haui.btl.demo.Mapper.FeedbackMapper;
-<<<<<<< HEAD
 import com.haui.btl.demo.Repository.BookingRepository;
 import com.haui.btl.demo.Repository.CarRepository;
-=======
->>>>>>> 1d77c79575cda7ddde9647c31be2219cc6a7e647
 import com.haui.btl.demo.Repository.FeedbackRepository;
 import com.haui.btl.demo.Repository.UserRepository;
 import com.haui.btl.demo.dto.response.FeedbackResponse;
@@ -93,6 +90,15 @@ public class ViewFeedbackReportService {
                 .average()
                 .orElse(0.0);
         return Math.round(averageRating * 100.0) / 100.0; // Round to 2 decimal places
+    }
+
+    public double getAverageRatingByIdCar(Integer carId) {
+        List<Feedback> feedbackList = feedbackRepository.findAllByBookingCarIdcar(carId);
+        double averageRating = feedbackList.stream()
+                .mapToDouble(Feedback::getRate)
+                .average()
+                .orElse(0.0);
+        return Math.round(averageRating * 100.0) / 100.0;
     }
 
 
