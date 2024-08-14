@@ -28,4 +28,7 @@ public interface BookingRepository extends JpaRepository<Booking, Integer> {
                                      @Param("startTime") LocalDateTime startTime,
                                      @Param("endTime") LocalDateTime endTime);
 
+    @Query(value = "select * from booking WHERE Car_idCar = :idCar", nativeQuery = true)
+    List<Booking> findBookingByIdCar(@Param("idCar") Integer idCar);
+
 }

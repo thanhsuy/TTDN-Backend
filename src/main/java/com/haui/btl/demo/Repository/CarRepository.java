@@ -1,5 +1,6 @@
 package com.haui.btl.demo.Repository;
 
+import com.haui.btl.demo.Entity.Booking;
 import com.haui.btl.demo.Entity.Car;
 import com.haui.btl.demo.Repository.CustomCarRepository.CarRepositoryCustom;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -44,11 +45,13 @@ public interface CarRepository extends JpaRepository<Car, Integer>, CarRepositor
     @Query(value = "SELECT EXISTS (" +
             "SELECT 1 FROM car WHERE status = 'Available' AND idCar = :idCar AND idCar NOT IN (" +
             "SELECT Car_idCar FROM booking " +
-            "WHERE startDateTime < :endTime AND endDateTime > :startTime " +
+            "WHERE startDateTime <= :endTime AND endDateTime >= :startTime " +
             "AND status <> 'Complete'))",
             nativeQuery = true)
-    Long checkCarAvailable(@Param("startTime") LocalDate startTime,
-                           @Param("endTime") LocalDate endTime,
+    Long checkCarAvailable(@Param("startTime") LocalDateTime startTime,
+                           @Param("endTime") LocalDateTime endTime,
                            @Param("idCar") int idCar);
+
+
 
 }

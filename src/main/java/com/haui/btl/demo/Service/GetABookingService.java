@@ -16,10 +16,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.Accessors;
 import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 
+import java.awt.print.Book;
 import java.util.List;
 
 @Service
@@ -73,5 +75,13 @@ public class GetABookingService {
         List<Booking> booking = bookingRepository.findBookingByIdUser(user.getIduser());
         return new ApiResponse<>().builder().result(booking).build();
     }
+
+
+    @PreAuthorize("hasRole('CUSTOMER')")
+    public ApiResponse getListBookingByIdCar(Integer idCar){
+        List<Booking> listBooking = bookingRepository.findBookingByIdCar(idCar);
+        return new ApiResponse<>().builder().result(listBooking).build();
+    }
+
 
 }

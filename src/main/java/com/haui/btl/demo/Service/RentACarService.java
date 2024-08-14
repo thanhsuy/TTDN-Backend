@@ -49,8 +49,8 @@ public class RentACarService {
             User user = userRepository.findByEmail(email).orElseThrow(() -> new AppException(ErrorCode.USER_NOTFOUND));
             booking.setUserIduser(user.getIduser());
             booking.setStatus(BookingStatus.PENDING_DEPOSIT.getStatus());
-            booking.setEnddatetime(request.getEnddatetime().atStartOfDay());
-            booking.setStartdatetime(request.getStartdatetime().atStartOfDay());
+            booking.setEnddatetime(request.getEnddatetime());
+            booking.setStartdatetime(request.getStartdatetime());
             bookingRepository.save(booking);
 
         } else throw new AppException(ErrorCode.CAR_NOT_AVAILABLE);
@@ -76,9 +76,12 @@ public class RentACarService {
 
         if (booking.getStatus().equals(BookingStatus.PENDING_DEPOSIT.getStatus())) {
             if (booking.getPaymentmethod().equals(PayMentMethod.WALLET.getName())) {
+                if(user.getWallet() < car.getDeposite()){
+                    throw new AppException(ErrorCode.NOTENOUGH_WALLET);
+                }
                 user.setWallet(user.getWallet() - car.getDeposite());
                 booking.setStatus(BookingStatus.CONFIRMRED.getStatus());
-                car.setStatus("Booked");
+//                car.setStatus("Booked");
                 carowner.setWallet(carowner.getWallet() + car.getDeposite());
             }
         }else{
