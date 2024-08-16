@@ -73,8 +73,10 @@ public class ViewFeedbackReportService {
                     var response = feedbackMapper.toFeedbackResponse(feedback);
                     var car = carRepository.findById(feedback.getBookingCarIdcar()).orElseThrow(() -> new AppException(ErrorCode.CAR_NOTFOUND));
                     var booking = bookingRepository.findById(feedback.getBookingIdbooking()).orElseThrow(() -> new AppException(ErrorCode.BOOKING_NOTFOUND));
+                    var userres = userRepository.findById(feedback.getBookingUserIduser()).orElseThrow(() -> new AppException(ErrorCode.USER_NOTFOUND));
                     response.setCarName(car.getName());
                     response.setCarModel(car.getModel());
+                    response.setUserName(userres.getName());
                     response.setBookingStartDate(booking.getStartdatetime().toString());
                     response.setBookingEndDate(booking.getEnddatetime().toString());
                     return response;

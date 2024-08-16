@@ -4,6 +4,7 @@ package com.haui.btl.demo.Controller;
 import com.haui.btl.demo.Entity.User;
 import com.haui.btl.demo.Service.UserService;
 import com.haui.btl.demo.Service.ViewHomePageasCustomerService;
+import com.haui.btl.demo.dto.request.UpdatePasswordRequest;
 import com.haui.btl.demo.dto.response.ApiResponse;
 import com.haui.btl.demo.dto.response.AuthenResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,7 @@ public class EditProfileController {
     @Autowired
     private UserService userService;
 
-    @PutMapping("/{id}")
+    @PutMapping("/userinfo/{id}")
     public ApiResponse<User> updateUser(@PathVariable Integer id, @RequestBody User user) {
         ApiResponse<User> apiReponse = new ApiResponse<>();
         apiReponse.setResult(userService.updateProfile(id, user));
@@ -28,5 +29,12 @@ public class EditProfileController {
         return ApiResponse.builder()
                 .result(id)
                 .build();
+    }
+
+    @PutMapping("/userpass/{id}")
+    public ApiResponse<User> updatePass(@PathVariable Integer id, @RequestBody UpdatePasswordRequest upr) {
+        ApiResponse<User> apiReponse = new ApiResponse<>();
+        apiReponse.setResult(userService.updateProfilePassword(id, upr.getPassword()));
+        return apiReponse;
     }
 }

@@ -142,8 +142,22 @@ public class UserService {
         if (optionalUser.isPresent()) {
             User existingUser = optionalUser.get();
             updatedUser.setIduser(id);
-            updatedUser.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
+//            updatedUser.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
             return userRepository.save(updatedUser);
+        } else {
+            throw new AppException(ErrorCode.USER_NOTFOUND);
+        }
+    }
+
+    public User updateProfilePassword(Integer id, String password) {
+        Optional<User> optionalUser = userRepository.findById(id);
+
+        if (optionalUser.isPresent()) {
+            User existingUser = optionalUser.get();
+            existingUser.setIduser(id);
+            existingUser.setPassword(passwordEncoder.encode(password));
+            System.out.println(passwordEncoder.encode(password) + "    "  + password);
+            return userRepository.save(existingUser);
         } else {
             throw new AppException(ErrorCode.USER_NOTFOUND);
         }

@@ -24,6 +24,7 @@ public class FeedbackResponse {
 
     User user;
 
+    String userName;
     String carName;
     String carModel;
     String bookingStartDate;
