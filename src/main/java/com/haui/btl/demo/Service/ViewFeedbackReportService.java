@@ -76,6 +76,7 @@ public class ViewFeedbackReportService {
                     var userres = userRepository.findById(feedback.getBookingUserIduser()).orElseThrow(() -> new AppException(ErrorCode.USER_NOTFOUND));
                     response.setCarName(car.getName());
                     response.setCarModel(car.getModel());
+                    response.setCarImage(car.getImages());
                     response.setUserName(userres.getName());
                     response.setBookingStartDate(booking.getStartdatetime().toString());
                     response.setBookingEndDate(booking.getEnddatetime().toString());

@@ -51,8 +51,10 @@
 package com.haui.btl.demo.Service;
 
 import com.haui.btl.demo.Entity.Booking;
+import com.haui.btl.demo.Entity.Car;
 import com.haui.btl.demo.Entity.User;
 import com.haui.btl.demo.Repository.BookingRepository;
+import com.haui.btl.demo.Repository.CarRepository;
 import com.haui.btl.demo.Repository.UserRepository;
 import com.haui.btl.demo.dto.response.ViewBookingListResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,6 +72,9 @@ public class ViewBookingListService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private CarRepository carRepository;
 
     public List<ViewBookingListResponse> getBookingsForUser(String email) {
         Optional<User> userOptional = userRepository.findByEmail(email);
@@ -89,6 +94,8 @@ public class ViewBookingListService {
 
     private ViewBookingListResponse mapToBookingResponse(Booking booking) {
         ViewBookingListResponse response = new ViewBookingListResponse();
+        Optional<Car> optionalCar = carRepository.findById(booking.getCarIdcar());
+        Car car = optionalCar.get();
         response.setIdbooking(booking.getIdbooking());
         response.setBookingno(booking.getBookingno());
         response.setStartdatetime(booking.getStartdatetime());
@@ -97,6 +104,7 @@ public class ViewBookingListService {
         response.setPaymentmethod(booking.getPaymentmethod());
         response.setStatus(booking.getStatus());
         response.setCarIdcar(booking.getCarIdcar());
+        response.setCarImage(car.getImages());
         response.setCarIdcarowner(booking.getCarIdcarowner());
         response.setUserIduser(booking.getUserIduser());
         return response;

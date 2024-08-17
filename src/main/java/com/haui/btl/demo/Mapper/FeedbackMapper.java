@@ -12,6 +12,7 @@ public interface FeedbackMapper {
 
     @Mapping(target = "carName", ignore = true)
     @Mapping(target = "carModel", ignore = true)
+    @Mapping(target = "carImage", ignore = true)
     @Mapping(target = "userName", ignore = true)
     @Mapping(target = "bookingStartDate", ignore = true)
     @Mapping(target = "bookingEndDate", ignore = true)

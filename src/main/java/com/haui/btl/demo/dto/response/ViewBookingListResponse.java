@@ -14,6 +14,7 @@ public class ViewBookingListResponse {
     private String paymentmethod;
     private String status;
     private int carIdcar;
+    private String carImage;
     private int carIdcarowner;
     private int userIduser;
 }
