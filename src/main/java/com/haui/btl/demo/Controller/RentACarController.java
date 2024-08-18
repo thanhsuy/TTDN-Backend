@@ -38,4 +38,9 @@ public class RentACarController {
     public ApiResponse getListCar() {
         return rentACarService.getListCar();
     }
+
+    @GetMapping("/getCarBooking/{carIdcar}")
+    public ApiResponse getCarBooking(@PathVariable("carIdcar") int carIdcar){
+        return rentACarService.getBooking(carIdcar);
+    }
 }
