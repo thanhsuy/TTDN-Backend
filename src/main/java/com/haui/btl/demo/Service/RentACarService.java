@@ -49,8 +49,8 @@ public class RentACarService {
             User user = userRepository.findByEmail(email).orElseThrow(() -> new AppException(ErrorCode.USER_NOTFOUND));
             booking.setUserIduser(user.getIduser());
             booking.setStatus(BookingStatus.PENDING_DEPOSIT.getStatus());
-            booking.setEnddatetime(request.getEnddatetime().atStartOfDay());
-            booking.setStartdatetime(request.getStartdatetime().atStartOfDay());
+            booking.setEnddatetime(request.getEnddatetime());
+            booking.setStartdatetime(request.getStartdatetime());
             bookingRepository.save(booking);
 
         } else throw new AppException(ErrorCode.CAR_NOT_AVAILABLE);

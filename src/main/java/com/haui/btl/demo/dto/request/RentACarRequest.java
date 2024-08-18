@@ -5,6 +5,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
@@ -12,7 +13,7 @@ import java.time.LocalDate;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class RentACarRequest {
-    LocalDate startdatetime;
-    LocalDate enddatetime;
+    LocalDateTime startdatetime;
+    LocalDateTime enddatetime;
     String paymentmethod;
 }
