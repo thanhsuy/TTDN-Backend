@@ -7,10 +7,13 @@ import com.haui.btl.demo.Exception.ErrorCode;
 import com.haui.btl.demo.Repository.BookingRepository;
 import com.haui.btl.demo.Repository.FeedbackRepository;
 import com.haui.btl.demo.Repository.UserRepository;
+import com.haui.btl.demo.dto.request.AddReportRequest;
 import com.haui.btl.demo.dto.response.ApiResponse;
 import com.haui.btl.demo.dto.response.UserRespone;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
 
 @Service
 public class AddFeedbackService {
@@ -23,7 +26,11 @@ public class AddFeedbackService {
     @Autowired
     FeedbackRepository feedbackRepository;
 
-    public ApiResponse<Feedback> creatFeedback(int bookingId, Feedback feedback){
+    public ApiResponse<Feedback> creatFeedback(int bookingId, AddReportRequest report){
+        Feedback feedback = new Feedback();
+        feedback.setContent(report.getContent());
+        feedback.setRate(report.getRate());
+        feedback.setDatetime(LocalDateTime.now());
         Booking booking = bookingRepository.findById(bookingId).orElseThrow(() -> new AppException(ErrorCode.BOOKING_NOTFOUND));
         feedback.setBookingCarIdcar(booking.getCarIdcar());
         feedback.setBookingCarIdcarowner(booking.getCarIdcarowner());
