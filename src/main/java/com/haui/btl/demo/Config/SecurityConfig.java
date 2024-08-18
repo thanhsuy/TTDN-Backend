@@ -30,6 +30,9 @@ public class SecurityConfig {
                     "/auth/introspect",
                     "/user/forgot",
                     "/resetpassword",
+                    "/getlistcar",
+                    "/getcar/**",
+                    "searchCar/**"
             };
     private String SERCRET_KEY = "0aPglnnROU/zGjIuvAA32LpDzmqEY2O7J4fgQ4Eh+4KuJaSCXQIFQgBv6a69Pvkt";
 

@@ -1,10 +1,14 @@
 package com.haui.btl.demo.Service;
 
+import com.haui.btl.demo.Exception.AppException;
+import com.haui.btl.demo.Exception.ErrorCode;
+import com.haui.btl.demo.Repository.UserRepository;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import okhttp3.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -14,7 +18,15 @@ import java.io.IOException;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @Builder
 public class EmailService {
+
+    @Autowired
+    UserRepository userRepository;
+
+
     public void postEmail(String from, String to, String subject, String text, String category) throws IOException {
+        if(!userRepository.existsByEmail(to)){
+            throw new AppException(ErrorCode.EMAIL_NOT_EXISTED);
+        }
         MediaType mediaType = MediaType.parse("application/json");
         OkHttpClient client = new OkHttpClient().newBuilder()
                 .build();

@@ -22,9 +22,6 @@ public class ConfirmPickUpController {
 
     @PostMapping("/{idbooking}")
     public ApiResponse confirmPickUpService(@PathVariable("idbooking") Integer idbooking){
-        return new ApiResponse()
-                .builder()
-                .result(confirmPickUpService.confirmPickUpService(idbooking))
-                .build();
+        return confirmPickUpService.confirmPickUpService(idbooking);
     }
 }

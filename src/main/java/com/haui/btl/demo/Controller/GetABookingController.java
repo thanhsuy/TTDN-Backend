@@ -23,10 +23,7 @@ public class GetABookingController {
 
     @GetMapping("/{idbooking}")
     public ApiResponse getABooking(@PathVariable("idbooking") Integer idbooking){
-        return new ApiResponse()
-                .builder()
-                .result(getABookingService.getABooking(idbooking))
-                .build();
+        return getABookingService.getABooking(idbooking);
     }
     @GetMapping("/carowner")
     public ApiResponse getListBooking() {

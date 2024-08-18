@@ -29,4 +29,9 @@ public class SearchCarController {
         return searchCarService.findAvailableCars(searchCarRequest);
     }
 
+    @PostMapping("thucApi")
+    public  ApiResponse searchCarAvailable(@RequestBody SearchCarRequestNew requestNew){
+        return searchCarService.searchCarAvailable(requestNew);
+    }
+
 }

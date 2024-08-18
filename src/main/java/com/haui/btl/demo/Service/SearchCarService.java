@@ -85,4 +85,10 @@ public class SearchCarService {
         apiResponse.setResult(searchCarResponseList);
         return apiResponse;
     }
+
+    public ApiResponse searchCarAvailable(SearchCarRequestNew request){
+        List<Car> carListSearch = carRepository.findAvailableCars(request.getAddress(), request.getStartTime(), request.getEndTime());
+        return new ApiResponse().builder().result(carListSearch).build();
+    }
+
 }

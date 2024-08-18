@@ -18,9 +18,6 @@ public class CancelBookingController {
     @PostMapping("/cancelbooking/{idbooking}")
     public ApiResponse cancelBooking(@PathVariable("idbooking") Integer idbooking){
 
-        return new ApiResponse()
-                .builder()
-                .result(cancelBookingService.cancelBooking(idbooking))
-                .build();
+        return cancelBookingService.cancelBooking(idbooking);
     }
 }

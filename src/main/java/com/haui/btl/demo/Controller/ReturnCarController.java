@@ -19,9 +19,6 @@ public class ReturnCarController {
 
     @PostMapping("/{idbooking}")
     public ApiResponse returnCar(@PathVariable("idbooking") Integer idbooking){
-        return new ApiResponse()
-                .builder()
-                .result(returnCarService.returnCar(idbooking))
-                .build();
+        return returnCarService.returnCar(idbooking);
     }
 }

@@ -8,6 +8,7 @@ import com.haui.btl.demo.Mapper.UserMapper;
 import com.haui.btl.demo.Repository.UserRepository;
 import com.haui.btl.demo.dto.request.ForgotPasswordRequest;
 import com.haui.btl.demo.dto.request.UserCreationRequest;
+import com.haui.btl.demo.dto.request.UserUpdateRequest;
 import com.haui.btl.demo.dto.response.ApiResponse;
 import com.haui.btl.demo.dto.response.UserRespone;
 import jakarta.persistence.criteria.CriteriaBuilder;
@@ -16,6 +17,7 @@ import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -73,6 +75,9 @@ public class UserService {
     }
 
     public ApiResponse fotgotPassword(ForgotPasswordRequest request) {
+        System.out.println(request.getEmail());
+        System.out.println(request.getNewpassword());
+        System.out.println(request.getConfirmpassword());
         User user = userRepository.findByEmail(request.getEmail()).orElseThrow(() -> new AppException(ErrorCode.USER_NOTFOUND));
         if(request.getNewpassword().equals(request.getConfirmpassword()))
         {
@@ -118,4 +123,39 @@ public class UserService {
         }
     }
 
+    public ApiResponse updateProfileThucApi(UserUpdateRequest request){
+        var context = SecurityContextHolder.getContext();
+        String email = context.getAuthentication().getName();
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new AppException(ErrorCode.USER_NOTFOUND));
+        if(userRepository.existsByEmail(request.getEmail())){
+            throw new AppException(ErrorCode.EMAIL_EXISTED);
+        }
+        if(!request.getName().equals("")){
+            user.setName(request.getName());
+        }
+        if(request.getDateofbirth() != null){
+            user.setDateofbirth(request.getDateofbirth());
+        }
+        if(request.getNationalidno() != 0){
+            user.setNationalidno(request.getNationalidno());
+        }
+        if(!request.getPhoneno().equals("")){
+            user.setPhoneno(request.getPhoneno());
+        }
+        if(!request.getEmail().equals("")){
+            user.setEmail(request.getEmail());
+        }
+        if(!request.getAddress().equals("")){
+            user.setAddress(request.getAddress());
+        }
+        if (!request.getDrivinglicense().equals("")) {
+            user.setDrivinglicense(request.getDrivinglicense());
+        }
+
+        if(!request.getPassword().equals("")){
+            user.setPassword(passwordEncoder.encode(request.getPassword()));
+        }
+        userRepository.save(user);
+        return new ApiResponse().builder().result(user).build();
+    }
 }

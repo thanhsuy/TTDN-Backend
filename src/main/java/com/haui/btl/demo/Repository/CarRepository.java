@@ -33,10 +33,10 @@ public interface CarRepository extends JpaRepository<Car, Integer>, CarRepositor
 //                                @Param("startTime") LocalDateTime startTime,
 //                                @Param("endTime") LocalDateTime endTime);
 
-    @Query("SELECT c FROM Car c WHERE (c.status = 'Available' OR c.idcar NOT IN (" +
+    @Query("SELECT c FROM Car c WHERE (c.status = 'Available' AND c.idcar NOT IN (" +
             "SELECT b.carIdcar FROM Booking b " +
-            "WHERE b.startdatetime < :endTime AND b.enddatetime > :startTime " +
-            "AND b.status <> 'Complete')) " +
+            "WHERE b.startdatetime <= :endTime AND b.enddatetime >= :startTime " +
+            "AND b.status <> 'Completed')) " +
             "AND c.address LIKE %:address%")
     List<Car> findAvailableCars(@Param("address") String address,
                                 @Param("startTime") LocalDateTime startTime,
@@ -46,7 +46,7 @@ public interface CarRepository extends JpaRepository<Car, Integer>, CarRepositor
             "SELECT 1 FROM car WHERE status = 'Available' AND idCar = :idCar AND idCar NOT IN (" +
             "SELECT Car_idCar FROM booking " +
             "WHERE startDateTime <= :endTime AND endDateTime >= :startTime " +
-            "AND status <> 'Complete'))",
+            "AND status <> 'Completed'))",
             nativeQuery = true)
     Long checkCarAvailable(@Param("startTime") LocalDateTime startTime,
                            @Param("endTime") LocalDateTime endTime,

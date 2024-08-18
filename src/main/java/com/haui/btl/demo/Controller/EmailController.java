@@ -2,6 +2,7 @@ package com.haui.btl.demo.Controller;
 
 import com.haui.btl.demo.Service.EmailService;
 import com.haui.btl.demo.dto.request.EmailRequest;
+import com.haui.btl.demo.dto.response.ApiResponse;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +22,8 @@ public class EmailController {
     EmailService emailService;
 
     @PostMapping("/resetpassword")
-    public void resetPassword(@RequestBody EmailRequest request) throws IOException {
+    public ApiResponse resetPassword(@RequestBody EmailRequest request) throws IOException {
         emailService.postEmail("mailtrap@demomailtrap.com", request.getEmail(), "Doi mat khau", request.getUrl(), "Integration Test");
+        return new ApiResponse().builder().result("Post email success").build();
     }
 }
