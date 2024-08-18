@@ -41,7 +41,9 @@ public class RentACarService {
         booking.setCarIdcar(carIdcar);
         Car car = carRepository.findById(carIdcar).orElseThrow(() -> new AppException(ErrorCode.CAR_NOTFOUND));
         int idCarOwner = car.getIdcarowner();
-
+        if(!request.getStartdatetime().isBefore(request.getEnddatetime())){
+            throw new AppException(ErrorCode.DATE_INVALID2);
+        }
         if (carRepository.checkCarAvailable(request.getStartdatetime(), request.getEnddatetime(), carIdcar) == 1) {
             booking.setCarIdcarowner(idCarOwner);
             var context = SecurityContextHolder.getContext();
@@ -83,9 +85,9 @@ public class RentACarService {
                 booking.setStatus(BookingStatus.CONFIRMRED.getStatus());
 //                car.setStatus("Booked");
                 carowner.setWallet(carowner.getWallet() + car.getDeposite());
+            } else if (booking.getPaymentmethod().equals(PayMentMethod.BANK_TRANSFER.getName())) {
+                booking.setStatus(BookingStatus.WAIT_CONFIRM.getStatus());
             }
-        }else{
-            booking.setStatus(BookingStatus.PENDING_DEPOSIT.getStatus());
         }
 
         userRepository.save(user);

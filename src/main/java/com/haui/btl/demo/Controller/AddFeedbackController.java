@@ -2,6 +2,7 @@ package com.haui.btl.demo.Controller;
 
 import com.haui.btl.demo.Entity.Feedback;
 import com.haui.btl.demo.Service.AddFeedbackService;
+import com.haui.btl.demo.dto.request.ThucFeedBackRequest;
 import com.haui.btl.demo.dto.response.ApiResponse;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -19,5 +20,10 @@ public class AddFeedbackController {
     @PostMapping("/{idBooking}")
     public ApiResponse addFeedback(@PathVariable("idBooking") int idBooking, @RequestBody Feedback feedback){
         return addFeedbackService.creatFeedback(idBooking, feedback);
+    }
+
+    @PostMapping("/thucApi/{idBooking}")
+    public ApiResponse thucApiaddFeedback(@PathVariable("idBooking") int idBooking, @RequestBody ThucFeedBackRequest feedback){
+        return addFeedbackService.thuccreatFeedback(idBooking, feedback);
     }
 }

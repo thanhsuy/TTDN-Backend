@@ -3,6 +3,7 @@ package com.haui.btl.demo.Controller;
 import com.haui.btl.demo.dto.request.RentACarRequest;
 import com.haui.btl.demo.dto.response.ApiResponse;
 import com.haui.btl.demo.Service.RentACarService;
+import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -20,7 +21,7 @@ public class RentACarController {
     RentACarService rentACarService;
 
     @PostMapping("/makeABooking/{carIdcar}")
-    public ApiResponse makeABooking(@RequestBody RentACarRequest request, @PathVariable("carIdcar") int carIdcar) {
+    public ApiResponse makeABooking(@RequestBody @Valid RentACarRequest request, @PathVariable("carIdcar") int carIdcar) {
         return rentACarService.makeABooking(request, carIdcar);
     }
 

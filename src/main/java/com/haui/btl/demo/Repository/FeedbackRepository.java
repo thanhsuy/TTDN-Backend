@@ -10,5 +10,4 @@ import java.util.List;
 public interface FeedbackRepository extends JpaRepository<Feedback, Integer> {
 
     List<Feedback> findAllByBookingCarIdcarowner(int carOwnerId);
-
 }

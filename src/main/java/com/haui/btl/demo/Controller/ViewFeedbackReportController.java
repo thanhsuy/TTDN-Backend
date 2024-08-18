@@ -2,6 +2,7 @@ package com.haui.btl.demo.Controller;
 
 import com.haui.btl.demo.Service.ViewFeedbackReportService;
 import com.haui.btl.demo.dto.request.ViewFeedbackReportRequest;
+import com.haui.btl.demo.dto.response.ApiResponse;
 import com.haui.btl.demo.dto.response.FeedbackResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -30,5 +31,10 @@ public class ViewFeedbackReportController {
     @GetMapping
     public List<FeedbackResponse> getFeedbackReport() {
         return viewFeedbackReportService.getFeedbackReport();
+    }
+
+    @GetMapping("/thucApi")
+    public ApiResponse getListFeedback(){
+        return viewFeedbackReportService.getListFeedback();
     }
 }

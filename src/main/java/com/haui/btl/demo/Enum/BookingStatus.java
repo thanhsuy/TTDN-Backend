@@ -17,6 +17,7 @@ public enum BookingStatus {
     PENDING_PAYMENT("Pending Payment"),
     CONFIRMRED("Confirmed"),
     PENDING_DEPOSIT("Pending Deposit"),
+    WAIT_CONFIRM("Wait Confirm")
     ;
     private String status;
 }

@@ -22,7 +22,9 @@ public enum ErrorCode {
     CAR_NOT_AVAILABLE(1004, "Xe nay hien tai chua the thue", HttpStatus.BAD_REQUEST),
     INSUFFICIENT_BALANCE(1014, "", HttpStatus.BAD_REQUEST),
     EMAIL_EXISTED(1015, "Email đã tồn tại",HttpStatus.BAD_REQUEST),
-    EMAIL_NOT_EXISTED(1016, "Email không tồn tại", HttpStatus.BAD_REQUEST)
+    EMAIL_NOT_EXISTED(1016, "Email không tồn tại", HttpStatus.BAD_REQUEST),
+    DATE_INVALID(1017, "Bạn không thể nhập ngày trong quá khứ!", HttpStatus.BAD_REQUEST),
+    DATE_INVALID2(1018, "End date phải là tương lai của start date", HttpStatus.BAD_REQUEST)
     ;
     ErrorCode(int code, String message, HttpStatusCode statusCode) {
         this.code = code;

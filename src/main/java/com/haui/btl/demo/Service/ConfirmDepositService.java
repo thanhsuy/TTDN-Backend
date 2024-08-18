@@ -42,7 +42,7 @@ public class ConfirmDepositService {
         Booking booking = bookingRepository.findById(idbooking).orElseThrow(() -> new AppException(ErrorCode.BOOKING_NOTFOUND));
         User user = userRepository.findById(booking.getUserIduser()).orElseThrow(() -> new AppException(ErrorCode.USER_NOTFOUND));
         Car car = carRepository.findById(booking.getCarIdcar()).orElseThrow(() -> new AppException(ErrorCode.CAR_NOTFOUND));
-        if(booking.getStatus().equals(BookingStatus.PENDING_DEPOSIT.getStatus()))
+        if(booking.getStatus().equals(BookingStatus.WAIT_CONFIRM.getStatus()))
         {
             User carOwner = userRepository.findById(booking.getCarIdcarowner()).orElseThrow(() -> new AppException(ErrorCode.USER_NOTFOUND));
             carOwner.setWallet(carOwner.getWallet() + car.getDeposite());
