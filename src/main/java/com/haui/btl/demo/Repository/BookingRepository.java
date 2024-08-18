@@ -20,6 +20,9 @@ public interface BookingRepository extends JpaRepository<Booking, Integer> {
     @Query(value = "select * from booking where User_idUser = :iduser", nativeQuery = true)
     public List<Booking> findBookingByIdUser(@Param("iduser") Integer iduser);
 
+    @Query(value = "select * from booking where Car_idCar = :idcar and status NOT IN ('Completed', 'Cancelled')", nativeQuery = true)
+    public List<Booking> findBookingByIdCar(@Param("idcar") Integer idcar);
+
     @Query("SELECT b FROM Booking b WHERE b.carIdcar = :idCar AND " +
             "(b.startdatetime < :endTime AND b.enddatetime > :startTime) " +
             "AND b.status <> 'Cancelled'")

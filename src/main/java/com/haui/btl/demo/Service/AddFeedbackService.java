@@ -23,7 +23,11 @@ public class AddFeedbackService {
     @Autowired
     FeedbackRepository feedbackRepository;
 
-    public ApiResponse<Feedback> creatFeedback(int bookingId, Feedback feedback){
+    public ApiResponse<Feedback> creatFeedback(int bookingId, AddReportRequest report){
+        Feedback feedback = new Feedback();
+        feedback.setContent(report.getContent());
+        feedback.setRate(report.getRate());
+        feedback.setDatetime(LocalDateTime.now());
         Booking booking = bookingRepository.findById(bookingId).orElseThrow(() -> new AppException(ErrorCode.BOOKING_NOTFOUND));
         feedback.setBookingCarIdcar(booking.getCarIdcar());
         feedback.setBookingCarIdcarowner(booking.getCarIdcarowner());

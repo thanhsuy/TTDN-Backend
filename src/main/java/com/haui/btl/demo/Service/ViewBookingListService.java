@@ -105,6 +105,7 @@ public class ViewBookingListService {
         response.setStatus(booking.getStatus());
         response.setCarIdcar(booking.getCarIdcar());
         response.setCarImage(car.getImages());
+        response.setCarName(car.getName());
         response.setCarIdcarowner(booking.getCarIdcarowner());
         response.setUserIduser(booking.getUserIduser());
         return response;

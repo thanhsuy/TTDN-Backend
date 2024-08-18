@@ -96,6 +96,10 @@ public class RentACarService {
         return new ApiResponse().builder().result(car).build();
     }
 
+    public ApiResponse getBooking(int id) {
+        return new ApiResponse<>().builder().result(bookingRepository.findBookingByIdCar(id)).build();
+    }
+
     public ApiResponse getListCar() {
         return new ApiResponse<>().builder().result(carRepository.findAll()).build();
     }
