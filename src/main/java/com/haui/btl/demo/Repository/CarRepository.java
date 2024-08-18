@@ -39,7 +39,7 @@ public interface CarRepository extends JpaRepository<Car, Integer>, CarRepositor
             "WHERE startDateTime < :endTime AND endDateTime > :startTime " +
             "AND status not in ('Completed', 'Cancelled'))))",
             nativeQuery = true)
-    Long checkCarAvailable(@Param("startTime") LocalDate startTime,
-                           @Param("endTime") LocalDate endTime,
+    Long checkCarAvailable(@Param("startTime") LocalDateTime startTime,
+                           @Param("endTime") LocalDateTime endTime,
                            @Param("idCar") int idCar);
 }
