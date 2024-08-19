@@ -21,6 +21,7 @@ public enum ErrorCode {
     CAROWNER_CONFIRM(1013, "Chủ xe chưa xác nhận thanh toán!!", HttpStatus.BAD_REQUEST),
     CAR_NOT_AVAILABLE(1004, "Xe nay hien tai chua the thue", HttpStatus.BAD_REQUEST),
     INSUFFICIENT_BALANCE(1014, "", HttpStatus.BAD_REQUEST),
+    CANNOT_EDIT(1015, "Khong the chinh sua xe nay", HttpStatus.BAD_REQUEST)
     ;
     ErrorCode(int code, String message, HttpStatusCode statusCode) {
         this.code = code;

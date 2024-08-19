@@ -2,6 +2,7 @@ package com.haui.btl.demo.Service;
 
 import com.haui.btl.demo.Entity.Booking;
 import com.haui.btl.demo.Entity.Car;
+import com.haui.btl.demo.Entity.Transactions;
 import com.haui.btl.demo.Entity.User;
 import com.haui.btl.demo.Enum.BookingStatus;
 import com.haui.btl.demo.Enum.PayMentMethod;
@@ -10,6 +11,7 @@ import com.haui.btl.demo.Exception.ErrorCode;
 import com.haui.btl.demo.Mapper.BookingMapper;
 import com.haui.btl.demo.Repository.BookingRepository;
 import com.haui.btl.demo.Repository.CarRepository;
+import com.haui.btl.demo.Repository.TransactionsRepository;
 import com.haui.btl.demo.Repository.UserRepository;
 import com.haui.btl.demo.dto.request.RentACarRequest;
 import com.haui.btl.demo.dto.response.ApiResponse;
@@ -23,6 +25,8 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
+import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Service
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -34,6 +38,16 @@ public class RentACarService {
     BookingMapper bookingMapper;
     UserRepository userRepository;
     VNPAYService vnpayService;
+    TransactionsRepository transactionsRepository;
+
+    public class BookingNoGenerator {
+        public static String generateBookingNo() {
+            UUID uuid = UUID.randomUUID();
+            String[] parts = uuid.toString().split("-");
+            // Use just the first part of the UUID (which is highly unique)
+            return parts[0];
+        }
+    }
 
     @PreAuthorize("hasRole('CUSTOMER')")
     public ApiResponse makeABooking(RentACarRequest request, int carIdcar) {
@@ -51,6 +65,7 @@ public class RentACarService {
             booking.setStatus(BookingStatus.PENDING_DEPOSIT.getStatus());
             booking.setEnddatetime(request.getEnddatetime());
             booking.setStartdatetime(request.getStartdatetime());
+            booking.setBookingno(BookingNoGenerator.generateBookingNo());
             bookingRepository.save(booking);
 
         } else throw new AppException(ErrorCode.CAR_NOT_AVAILABLE);
@@ -62,6 +77,7 @@ public class RentACarService {
     }
 
     public ApiResponse paidDeposid(Integer idbooking) throws UnsupportedEncodingException {
+
         Booking booking =
                 bookingRepository.findById(idbooking).orElseThrow(() -> new AppException(ErrorCode.BOOKING_NOTFOUND));
         User user = userRepository
@@ -74,12 +90,30 @@ public class RentACarService {
                 .findById(booking.getCarIdcarowner())
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOTFOUND));
 
+        Transactions transactionsCustomer = new Transactions();
+        transactionsCustomer.setBookingno(booking.getBookingno());
+        transactionsCustomer.setUserIduser(user.getIduser());
+        transactionsCustomer.setType("Paid Deposit");
+        transactionsCustomer.setDatetime(LocalDateTime.now());
+        transactionsCustomer.setCarname(car.getName());
+
+        Transactions transactionsCarOwner = new Transactions();
+        transactionsCarOwner.setBookingno(booking.getBookingno());
+        transactionsCarOwner.setUserIduser(carowner.getIduser());
+        transactionsCarOwner.setType("Receive Deposit");
+        transactionsCarOwner.setDatetime(LocalDateTime.now());
+        transactionsCarOwner.setCarname(car.getName());
+
         if (booking.getStatus().equals(BookingStatus.PENDING_DEPOSIT.getStatus())) {
             if (booking.getPaymentmethod().equals(PayMentMethod.WALLET.getName())) {
                 user.setWallet(user.getWallet() - car.getDeposite());
+                transactionsCustomer.setAmount(-car.getDeposite());
                 booking.setStatus(BookingStatus.CONFIRMRED.getStatus());
                 car.setStatus("Booked");
                 carowner.setWallet(carowner.getWallet() + car.getDeposite());
+                transactionsCarOwner.setAmount(car.getDeposite());
+                transactionsRepository.save(transactionsCustomer);
+                transactionsRepository.save(transactionsCarOwner);
             }
         }else{
             booking.setStatus(BookingStatus.PENDING_DEPOSIT.getStatus());
