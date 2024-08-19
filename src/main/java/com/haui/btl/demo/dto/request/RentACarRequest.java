@@ -16,4 +16,8 @@ public class RentACarRequest {
     LocalDateTime startdatetime;
     LocalDateTime enddatetime;
     String paymentmethod;
+    String name;
+    String phoneno;
+    String email;
+    String drivinglicense;
 }
