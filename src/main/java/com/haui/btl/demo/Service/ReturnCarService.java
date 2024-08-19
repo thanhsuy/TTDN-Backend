@@ -2,6 +2,7 @@ package com.haui.btl.demo.Service;
 
 import com.haui.btl.demo.Entity.Booking;
 import com.haui.btl.demo.Entity.Car;
+import com.haui.btl.demo.Entity.Transactions;
 import com.haui.btl.demo.Entity.User;
 import com.haui.btl.demo.Enum.BookingStatus;
 import com.haui.btl.demo.Exception.AppException;
@@ -17,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
 @Service
@@ -36,6 +38,9 @@ public class ReturnCarService {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    TransactionsRepository transactionsRepository;
 
 //    @PreAuthorize("hasRole('CUSTOMER')")
 //    public ApiResponse returnCar(Integer idbooking){
@@ -76,6 +81,22 @@ public ApiResponse returnCar(Integer idbooking) {
     Car car = carRepository
             .findById(booking.getCarIdcar())
             .orElseThrow(() -> new AppException(ErrorCode.CAR_NOTFOUND));
+
+
+    Transactions transactionsCustomer = new Transactions();
+    transactionsCustomer.setBookingno(booking.getBookingno());
+    transactionsCustomer.setUserIduser(user.getIduser());
+    transactionsCustomer.setType("Final Payment");
+    transactionsCustomer.setDatetime(LocalDateTime.now());
+    transactionsCustomer.setCarname(car.getName());
+
+    Transactions transactionsCarOwner = new Transactions();
+    transactionsCarOwner.setBookingno(booking.getBookingno());
+    transactionsCarOwner.setUserIduser(carOwner.getIduser());
+    transactionsCarOwner.setType("Final Payment");
+    transactionsCarOwner.setDatetime(LocalDateTime.now());
+    transactionsCarOwner.setCarname(car.getName());
+
     if (booking.getStatus().equals(BookingStatus.IN_PROGRESS.getStatus())
             || booking.getStatus().equals(BookingStatus.PENDING_PAYMENT.getStatus())) {
         int dayBetween = (int) ChronoUnit.DAYS.between(booking.getStartdatetime(), booking.getEnddatetime());
@@ -87,8 +108,13 @@ public ApiResponse returnCar(Integer idbooking) {
         }
         booking.setStatus(BookingStatus.COMPLETE.getStatus());
         user.setWallet(user.getWallet() - remaining);
+        transactionsCustomer.setAmount(-remaining);
         carOwner.setWallet(carOwner.getWallet() + remaining);
+        transactionsCarOwner.setAmount(remaining);
+
         car.setStatus("Available");
+        transactionsRepository.save(transactionsCustomer);
+        transactionsRepository.save(transactionsCarOwner);
         carRepository.save(car);
         userRepository.save(user);
         userRepository.save(carOwner);
