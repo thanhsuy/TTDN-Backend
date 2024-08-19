@@ -15,7 +15,7 @@ import java.util.*;
 public class VNPAYService {
     public String createPayment(Integer idbooking , Car car) throws UnsupportedEncodingException {
         String orderType = "other";
-        long amount = (long) car.getDeposite()*10000;
+        long amount = (long) car.getDeposite()*100;
         String vnp_TxnRef = VNPAYConfig.getRandomNumber(8);
         String vnp_IpAddr = "192.168.100.3";
 
