@@ -51,8 +51,10 @@ public class RentACarService {
 
     @PreAuthorize("hasRole('CUSTOMER')")
     public ApiResponse makeABooking(RentACarRequest request, int carIdcar) {
+        System.out.print(request.getPhoneno()+"lalsl");
         Booking booking = bookingMapper.toBooking(request);
         booking.setCarIdcar(carIdcar);
+        booking.setDriversinformation(request.getName()+","+request.getPhoneno()+","+request.getEmail()+","+request.getDrivinglicense());
         Car car = carRepository.findById(carIdcar).orElseThrow(() -> new AppException(ErrorCode.CAR_NOTFOUND));
         int idCarOwner = car.getIdcarowner();
 
