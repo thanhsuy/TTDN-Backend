@@ -7,4 +7,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface TermofuseRepository extends JpaRepository<Termofuse, TermofuseId> {
+    Termofuse findByIdcar(int idcar);
 }

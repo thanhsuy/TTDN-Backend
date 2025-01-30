@@ -1,22 +1,23 @@
 package com.haui.btl.demo.Entity;
 
-import jakarta.persistence.*;
-import lombok.*;
-import lombok.experimental.FieldDefaults;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.IdClass;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE)
-@Builder
 @IdClass(AdditionalfunctionsId.class)
 public class Additionalfunctions {
     @Id
-    @Column(nullable = false)
-    Integer idcar;
+    private int idcar;
 
     @Id
-    @Column(nullable = false, length = 200)
-    String namefunctions;
+    private String namefunctions;
+
+    // Other fields, getters, setters, etc.
 }

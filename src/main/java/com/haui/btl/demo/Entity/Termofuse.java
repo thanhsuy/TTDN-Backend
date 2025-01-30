@@ -1,6 +1,9 @@
 package com.haui.btl.demo.Entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.IdClass;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -14,9 +17,9 @@ import lombok.experimental.FieldDefaults;
 public class Termofuse {
     @Id
     @Column(nullable = false)
-    int idCar;
+    int idcar;
 
     @Id
     @Column(nullable = false, length = 100)
-    String nameTerms;
+    String nameterms;
 }

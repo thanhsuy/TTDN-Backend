@@ -14,6 +14,6 @@ import java.io.Serializable;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class TermofuseId implements Serializable {
-    int idCar;
-    String nameTerms;
+    int idcar;
+    String nameterms;
 }
